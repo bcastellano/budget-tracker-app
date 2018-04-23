@@ -29,12 +29,22 @@
       <li><a href="https://vue-loader.vuejs.org/en" target="_blank">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     </ul>
+    <h3>Vuetify</h3>
+    <ul>
+      <li><a href="https://vuetifyjs.com/en/theme-generator" target="_blank">theme generator</a></li>
+      <li><a href="https://vuetifyjs.com/en/layout/pre-defined" target="_blank">vuetify docs</a></li>
+      <li><a href="https://material.io/icons/" target="_blank">material icons</a></li>
+    </ul>
+    <h3>Others</h3>
+    <ul>
+      <li><a href="https://dashboard.cypress.io/#/login" target="_blank">cypress</a></li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'HelpLinks',
   props: {
     msg: String
   }
