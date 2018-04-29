@@ -14,7 +14,11 @@ Vue.use(Vuetify)
 function requiredAuth (to, from, next) {
   console.log(from.path + ' => ' + to.path)
   console.log(store.user)
-  if (store.getters.user == null && to.meta.secured === true) {
+
+  if (
+    store.getters.user == null &&
+    to.matched.some(route => route.meta.secured === true)
+  ) {
     console.log('redirect-to-login')
 
     // Cancel this routing and replace with unlogged entry point
@@ -36,6 +40,8 @@ new Vue({
       store.commit('SET_USER', user)
       if (user) {
         this.$router.push({name: 'home'})
+      } else {
+        this.$router.push({name: 'auth'})
       }
     })
     store.commit('SET_FIRE_APP', FireApp)

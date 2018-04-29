@@ -34,7 +34,6 @@ export default {
   methods: {
     logOut () {
       firebase.auth().signOut()
-      this.$router.push({name: 'auth'})
     }
   }
 }
