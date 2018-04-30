@@ -27,6 +27,18 @@ function requiredAuth (to, from, next) {
     return
   }
 
+  if (
+    store.getters.user !== null &&
+    to.name === 'auth'
+  ) {
+    console.log('redirect-to-home')
+
+    // Cancel this routing and replace with unlogged entry point
+    next(false)
+    router.replace({name: 'home'})
+    return
+  }
+
   next()
 }
 
