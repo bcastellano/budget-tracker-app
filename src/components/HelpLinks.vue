@@ -35,9 +35,18 @@
       <li><a href="https://vuetifyjs.com/en/layout/pre-defined" target="_blank">vuetify docs</a></li>
       <li><a href="https://material.io/icons/" target="_blank">material icons</a></li>
     </ul>
-    <h3>Others</h3>
+    <h3>Tests</h3>
     <ul>
       <li><a href="https://dashboard.cypress.io/#/login" target="_blank">cypress</a></li>
+      <li><a href="https://vue-test-utils.vuejs.org/en/" target="_blank">vue-test-utils</a></li>
+    </ul>
+    <h3>Firebase</h3>
+    <ul>
+      <li><a href="https://medium.com/dailyjs/authenticating-a-vue-js-application-with-firebase-ui-8870a3a5cff8" target="_blank">authenticating-a-vue-js-application-with-firebase-ui</a></li>
+      <li><a href="https://github.com/rstormsf/friendsmap" target="_blank">github.com/rstormsf/friendsmap</a></li>
+      <li><a href="https://firebase.google.com/docs/auth/?hl=es-419" target="_blank">firebase auth</a></li>
+      <li><a href="https://github.com/firebase/firebaseui-web" target="_blank">firebaseui-web</a></li>
+      <li><a href="https://gist.github.com/mickaelandrieu/a66bdf031a3c5fa4caf301504f018904" target="_blank">gist.github.com/mickaelandrieu</a></li>
     </ul>
   </div>
 </template>
