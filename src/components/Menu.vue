@@ -1,68 +1,18 @@
 <template>
-  <v-navigation-drawer clipped fixed v-model="drawer" app :mini-variant.sync="mini">
+  <v-navigation-drawer clipped fixed v-model="drawer" app :mini-variant="mini">
     <v-list dense>
-      <v-list-tile :to='{name: "home"}'>
-        <v-list-tile-action>
-          <v-icon>dashboard</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Dashboard</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+      <template v-for="item in menuItems">
+        <v-list-tile :key="item.title" :to="item.to" v-if="!item.divider">
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
 
-      <v-divider></v-divider>
-
-      <v-list-tile :to='{name: "accounts"}'>
-        <v-list-tile-action>
-          <v-icon>account_balance</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Accounts</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile :to='{name: "categories"}'>
-        <v-list-tile-action>
-          <v-icon>label</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Categories</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile :to='{name: "movements"}'>
-        <v-list-tile-action>
-          <v-icon>swap_horiz</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Movements</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-
-      <v-divider></v-divider>
-
-      <v-list-tile :to='{name: "settings"}'>
-        <v-list-tile-action>
-          <v-icon>settings</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Settings</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile :to='{name: "about"}'>
-        <v-list-tile-action>
-          <v-icon>info</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>About</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
-      <v-list-tile :to='{name: "help"}'>
-        <v-list-tile-action>
-          <v-icon>help</v-icon>
-        </v-list-tile-action>
-        <v-list-tile-content>
-          <v-list-tile-title>Help</v-list-tile-title>
-        </v-list-tile-content>
-      </v-list-tile>
+        <v-divider v-if="item.divider" :key="item.title"></v-divider>
+      </template>
 
       <v-list-tile>
         <v-list-tile-content></v-list-tile-content>
@@ -77,10 +27,24 @@
 </template>
 
 <script>
+const menuItems = [
+  {title: 'Dashboard', icon: 'dashboard', to: {name: 'home'}},
+  {divider: true},
+  {title: 'Accounts', icon: 'account_balance', to: {name: 'accounts'}},
+  {title: 'Categories', icon: 'label', to: {name: 'categories'}},
+  {title: 'Movements', icon: 'swap_horiz', to: {name: 'movements'}},
+  {divider: true},
+  {title: 'Settings', icon: 'settings', to: {name: 'settings'}},
+  {title: 'About', icon: 'info', to: {name: 'about'}},
+  {title: 'Help', icon: 'help', to: {name: 'help'}},
+  {divider: true}
+]
+
 export default {
   name: 'Menu',
   data: () => ({
-    mini: false
+    mini: true,
+    menuItems
   }),
   props: {
     drawer: Boolean
