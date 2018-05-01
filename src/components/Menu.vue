@@ -43,7 +43,7 @@ const menuItems = [
 export default {
   name: 'Menu',
   data: () => ({
-    mini: true,
+    mini: false,
     menuItems
   }),
   props: {
