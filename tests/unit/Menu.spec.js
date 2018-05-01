@@ -29,7 +29,7 @@ describe('Menu.vue', () => {
     })
   })
 
-  it('aside menu opens and closes', () => {
+  it('Aside menu opens and closes', () => {
     wrapper.setProps({ drawer: false })
     expect(wrapper.classes()).toContain('navigation-drawer--close')
 
@@ -37,8 +37,12 @@ describe('Menu.vue', () => {
     expect(wrapper.classes()).toContain('navigation-drawer--open')
   })
 
-  it('aside menu as mini variant', () => {
+  it('Aside menu show as normal and as mini variant', () => {
     wrapper.setData({ mini: true })
     expect(wrapper.classes()).toContain('navigation-drawer--mini-variant')
+
+    expect(wrapper.vm.mini).toBe(true)
+    wrapper.find('button').trigger('click')
+    expect(wrapper.vm.mini).toBe(false)
   })
 })
