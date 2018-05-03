@@ -2,10 +2,7 @@
   <div>
     <Menu :drawer="drawer" />
 
-    <v-toolbar app fixed clipped-left>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>Budget Tracker</v-toolbar-title>
-    </v-toolbar>
+    <Toolbar :drawer="drawer" v-on:menu-toggle="drawer = $event" />
 
     <v-content>
       <v-container fluid>
@@ -21,13 +18,15 @@
 
 <script>
 import Menu from '@/components/Menu'
+import Toolbar from '@/components/Toolbar'
 
 export default {
   data: () => ({
     drawer: true
   }),
   components: {
-    Menu
+    Menu,
+    Toolbar
   }
 }
 </script>
