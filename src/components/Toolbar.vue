@@ -4,7 +4,7 @@
     <v-toolbar-title>Budget Tracker</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn flat>{{ email }}</v-btn>
+      <v-btn :to="{name: 'profile'}" flat>{{ email }}</v-btn>
     </v-toolbar-items>
     <v-tooltip bottom>
       <span>Logout</span>

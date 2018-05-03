@@ -10,6 +10,7 @@ import Settings from './views/Settings.vue'
 import About from './views/About.vue'
 import Help from './views/Help.vue'
 import Auth from './views/Auth.vue'
+import Profile from './views/Profile.vue'
 import NotFound from './views/NotFound.vue'
 
 Vue.use(Router)
@@ -68,6 +69,11 @@ export default new Router({
           name: 'help',
           path: '/help',
           component: Help
+        },
+        {
+          name: 'profile',
+          path: '/profile',
+          component: Profile
         }
       ]
     },
