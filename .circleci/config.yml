@@ -37,3 +37,7 @@ jobs:
       # run tests!
       - run: npm run test
       - run: npm run e2e
+      - store_artifacts:
+          path: tests/e2e/videos
+      - store_artifacts:
+          path: tests/e2e/screenshots
