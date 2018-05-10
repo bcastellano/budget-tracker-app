@@ -45,4 +45,4 @@ jobs:
       # deploy
       - run:
           name: Deploy master branch to Firebase
-          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
+          command: ./node_modules/.bin/firebase --project $FIREBASE_PROJECT deploy --token=$FIREBASE_TOKEN
