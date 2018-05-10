@@ -42,7 +42,10 @@ jobs:
       - store_artifacts:
           path: tests/e2e/screenshots
 
-      # deploy
+      # build and deploy
+      - run:
+          name: Build app sources
+          command: npm run build
       - run:
           name: Deploy master branch to Firebase
           command: ./node_modules/.bin/firebase --project $FIREBASE_PROJECT deploy --token=$FIREBASE_TOKEN
