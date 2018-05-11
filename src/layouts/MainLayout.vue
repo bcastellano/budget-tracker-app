@@ -10,15 +10,14 @@
       </v-container>
     </v-content>
 
-    <v-footer app fixed>
-      <span>&copy; 2018</span>
-    </v-footer>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Menu from '@/components/Menu'
 import Toolbar from '@/components/Toolbar'
+import Footer from '@/components/Footer'
 
 export default {
   data: () => ({
@@ -26,7 +25,8 @@ export default {
   }),
   components: {
     Menu,
-    Toolbar
+    Toolbar,
+    Footer
   }
 }
 </script>
