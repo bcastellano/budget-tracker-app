@@ -52,7 +52,7 @@ jobs:
           command: npm run build
       - run:
           name: Get app version
-          command: export PKG_VERSION=v$(node -pe 'require("./package.json").version')
+          command: echo "export PKG_VERSION=v$(node -pe 'require("./package.json").version')" >> $BASH_ENV
       - run:
           name: Deploy master branch to Firebase
           command: ./node_modules/.bin/firebase --project $FIREBASE_PROJECT deploy --token $FIREBASE_TOKEN -m ${PKG_VERSION}_${CIRCLE_SHA1:0:7}
