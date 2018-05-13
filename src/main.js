@@ -5,7 +5,7 @@ import store from './store'
 import './registerServiceWorker'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-import { FireApp, FireUIApp } from './helpers/firebaseConfig'
+import { auth } from './helpers/firebaseConfig'
 
 Vue.config.productionTip = false
 
@@ -43,7 +43,7 @@ new Vue({
   router,
   store,
   created () {
-    FireApp.auth().onAuthStateChanged((user) => {
+    auth.onAuthStateChanged((user) => {
       store.commit('SET_USER', user)
       if (user) {
         this.$router.push({name: 'home'})
@@ -51,8 +51,6 @@ new Vue({
         this.$router.push({name: 'auth'})
       }
     })
-    store.commit('SET_FIRE_APP', FireApp)
-    store.commit('SET_FIRE_UI_APP', FireUIApp)
   },
   render: h => h(App)
 }).$mount('#app')

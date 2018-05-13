@@ -13,7 +13,7 @@
   </v-layout>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { authUI } from '@/helpers/firebaseConfig'
 import firebase from 'firebase'
 
 const uiConfig = {
@@ -27,18 +27,12 @@ const uiConfig = {
 export default {
   name: 'auth',
 
-  computed: {
-    ...mapGetters({
-      fireUiApp: 'fireUiApp'
-    })
-  },
-
   mounted () {
-    this.fireUiApp.start('#firebaseui-auth-container', uiConfig)
+    authUI.start('#firebaseui-auth-container', uiConfig)
   },
 
   destroyed () {
-    this.fireUiApp.reset()
+    authUI.reset()
   }
 }
 </script>

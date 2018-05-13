@@ -11,5 +11,8 @@ const config = {
   messagingSenderId: process.env.VUE_APP_FIRE_MESSAGING_SENDER_ID
 }
 
-export const FireApp = firebase.initializeApp(config)
-export const FireUIApp = new firebaseui.auth.AuthUI(firebase.auth(FireApp))
+const firebaseApp = firebase.initializeApp(config)
+
+export const auth = firebaseApp.auth()
+export const authUI = new firebaseui.auth.AuthUI(firebase.auth(firebaseApp))
+// export const db = firebaseApp.firestore()
