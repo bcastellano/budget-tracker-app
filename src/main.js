@@ -12,15 +12,12 @@ Vue.config.productionTip = false
 Vue.use(Vuetify)
 
 function requiredAuth (to, from, next) {
-  console.log(from.path + ' => ' + to.path)
-  console.log(store.user)
+  console.log('%croute', `background: blue; color: white; padding: 2px 0.5em; border-radius: 0.5em;`, from.path + ' => ' + to.path)
 
   if (
     store.getters.user == null &&
     to.matched.some(route => route.meta.secured === true)
   ) {
-    console.log('redirect-to-login')
-
     // Cancel this routing and replace with unlogged entry point
     next(false)
     router.replace({name: 'auth'})
@@ -31,8 +28,6 @@ function requiredAuth (to, from, next) {
     store.getters.user !== null &&
     to.name === 'auth'
   ) {
-    console.log('redirect-to-home')
-
     // Cancel this routing and replace with unlogged entry point
     next(false)
     router.replace({name: 'home'})
