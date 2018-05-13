@@ -1,6 +1,6 @@
 <template>
   <v-toolbar app fixed clipped-left>
-    <v-toolbar-side-icon @click.stop="$emit('menu-toggle', drawer = !drawer)"></v-toolbar-side-icon>
+    <v-toolbar-side-icon @click.stop="$emit('menu-toggle', menuState = !menuState)"></v-toolbar-side-icon>
     <v-toolbar-title>Budget Tracker</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
@@ -23,6 +23,11 @@ export default {
   name: 'Toolbar',
   computed: {
     email: () => store.getters.user.email
+  },
+  data () {
+    return {
+      menuState: this.drawer
+    }
   },
   props: {
     drawer: Boolean
