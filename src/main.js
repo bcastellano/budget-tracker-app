@@ -6,6 +6,7 @@ import './registerServiceWorker'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import { auth } from './helpers/firebaseConfig'
+import { User, UserManager } from '@/models/User'
 
 Vue.config.productionTip = false
 
@@ -43,10 +44,15 @@ new Vue({
   router,
   store,
   created () {
-    auth.onAuthStateChanged((user) => {
-      store.commit('SET_USER', user)
-      if (user) {
+    auth.onAuthStateChanged(async (authUser) => {
+      store.commit('SET_USER', authUser)
+      if (authUser) {
         this.$router.push({name: 'home'})
+
+        var user = await UserManager.get(authUser.uid)
+        if (!user) {
+          UserManager.save((new User(authUser)).toObject(), authUser.id)
+        }
       } else {
         this.$router.push({name: 'auth'})
       }
