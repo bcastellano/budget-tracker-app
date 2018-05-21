@@ -26,9 +26,9 @@ function requiredAuth (to, from, next) {
     store.getters.user == null &&
     to.matched.some(route => route.meta.secured === true)
   ) {
-    // Cancel this routing and replace with unlogged entry point
+    // Cancel this routing and replace with unlogged entry point. Remember url to go when logged
     next(false)
-    router.replace({name: 'auth'})
+    router.replace({name: 'auth', query: {to: to.path}})
     return
   }
 
@@ -54,7 +54,10 @@ new Vue({
     auth.onAuthStateChanged(async (authUser) => {
       store.commit('SET_USER', authUser)
       if (authUser) {
-        this.$router.push({name: 'home'})
+        // go to remembered url if exists
+        if (this.$route.query.to) {
+          this.$router.push(this.$route.query.to)
+        }
 
         var user = await UserManager.get(authUser.uid)
         if (!user) {
