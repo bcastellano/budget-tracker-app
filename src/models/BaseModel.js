@@ -8,7 +8,11 @@ export default class BaseModel {
    */
   toObject () {
     const obj = {}
-    Object.keys(this).forEach(key => { obj[key] = this[key] })
+    Object.keys(this).forEach(key => {
+      if (key !== 'id') {
+        obj[key] = this[key]
+      }
+    })
 
     return obj
   }

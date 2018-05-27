@@ -8,6 +8,7 @@
 
 <script>
 import AccountList from '@/components/Accounts/List'
+import {AccountManager} from '@/models/Account'
 
 export default {
   name: 'accounts',
@@ -20,24 +21,9 @@ export default {
     }
   },
   created () {
-    this.accountList = [
-      {
-        id: 'bank-1',
-        name: 'Bank 1',
-        color: 'grey',
-        colorText: 'white--text',
-        amount: 1000,
-        icon: 'account_balance'
-      },
-      {
-        id: 'bank-2',
-        name: 'Bank 2',
-        color: 'grey',
-        colorText: 'white--text',
-        amount: 2000,
-        icon: 'account_balance_wallet'
-      }
-    ]
+    AccountManager.list().then(list => {
+      this.accountList = list
+    })
   }
 }
 </script>

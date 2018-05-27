@@ -2,27 +2,38 @@
   <div>
     <v-card>
       <v-container fluid style="min-height: 0;" grid-list-lg>
-        <v-layout v-for="account in list" :key="account.name" row wrap>
+        <v-layout v-if="list.length == 0" row wrap>
+          <v-flex xs12 text-xs-center>
+            <span>
+              <v-icon medium>info</v-icon> list is empty, create an account
+              <v-btn flat icon color="primary" @click="openForm()">
+                <v-icon>add</v-icon>
+              </v-btn>
+            </span>
+          </v-flex>
+        </v-layout>
+
+        <v-layout v-if="list.length > 0" v-for="account in list" :key="account.name" row wrap>
           <v-flex xs12>
-            <v-card :color="account.color" :class="account.colorText">
+            <v-card :style="{ 'background-color': account.color, 'color': account.colorText }">
               <v-card-title>
-                <div class="headline"><v-icon x-large dark>{{ account.icon }}</v-icon>{{ account.name }}</div>
+                <div class="headline"><v-icon x-large dark>account_balance</v-icon>{{ account.name }}</div>
                 <div>Total money <strong>{{ account.amount }}</strong>€</div>
               </v-card-title>
               <v-card-actions>
-                <v-btn flat dark>edit</v-btn>
+                <v-btn flat dark @click="openForm(account)">edit</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
         </v-layout>
 
-        <v-btn color="primary" absolute top right fab @click.stop="formOpened = true">
+        <v-btn color="primary" absolute top right fab @click.stop="openForm()">
           <v-icon>add</v-icon>
         </v-btn>
       </v-container>
     </v-card>
 
-    <AccountForm :opened="formOpened" v-on:form-closed="formOpened = $event" />
+    <AccountForm :opened="formOpened" :account="accountData" v-on:form-closed="closeForm($event)" />
   </div>
 </template>
 
@@ -39,7 +50,18 @@ export default {
   },
   data () {
     return {
-      formOpened: false
+      formOpened: false,
+      accountData: {}
+    }
+  },
+  methods: {
+    openForm: function (account) {
+      this.accountData = Object.assign({}, account)
+      this.formOpened = true
+    },
+    closeForm: function (event) {
+      this.accountData = {}
+      this.formOpened = false
     }
   }
 }

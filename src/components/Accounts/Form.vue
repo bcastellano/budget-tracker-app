@@ -13,10 +13,16 @@
           </v-toolbar-items>
         </v-toolbar>
         <v-card-text>
-
-          <v-form v-model="valid">
+          <v-form ref="form" v-model="valid">
             <v-text-field
-              v-model="name"
+              v-if="account.id"
+              v-model="account.id"
+              label="Id"
+              disabled
+            ></v-text-field>
+
+            <v-text-field
+              v-model="account.name"
               :rules="nameRules"
               :counter="30"
               label="Name"
@@ -24,15 +30,33 @@
             ></v-text-field>
 
             <v-text-field
-              v-model="initialBalance"
+              v-model="account.initialBalance"
               :rules="initialBalanceRules"
               label="Initial balance"
               required
             ></v-text-field>
 
-            <v-select :items="colors" v-model="color" label="Select">
+            <v-select :items="backgroundColors" item-value="hex" v-model="account.color" label="Select background color">
               <template slot="selection" slot-scope="data">
-                <v-list-tile-title :style="{ 'background-color': data.item.hex}"></v-list-tile-title>
+                <v-list-tile-title
+                  v-text="data.item.name"
+                  :style="{ 'background-color': data.item.hex, 'color': calculateTextColor(data.item.name) }"
+                ></v-list-tile-title>
+              </template>
+              <template slot="item" slot-scope="data">
+                <v-list-tile-title
+                  v-text="data.item.name"
+                  :style="{ 'background-color': data.item.hex, 'color': calculateTextColor(data.item.name) }"
+                ></v-list-tile-title>
+              </template>
+            </v-select>
+
+            <v-select :items="textColors" item-value="hex" v-model="account.colorText" label="Select text color">
+              <template slot="selection" slot-scope="data">
+                <v-list-tile-title
+                  v-text="data.item.name"
+                  :style="{ 'background-color': data.item.hex, 'color': calculateTextColor(data.item.name) }"
+                ></v-list-tile-title>
               </template>
               <template slot="item" slot-scope="data">
                 <v-list-tile-title
@@ -50,27 +74,27 @@
 
 <script>
 import colors from 'vuetify/es5/util/colors'
+import {AccountManager} from '@/models/Account'
 
 export default {
   name: 'AccountForm',
   props: {
-    opened: Boolean
+    opened: Boolean,
+    account: Object
   },
   data () {
     return {
-      name: '',
-      initialBalance: '',
-      color: null,
       valid: false,
       nameRules: [
         v => !!v || 'Name is required',
-        v => v.length <= 30 || 'Name must be less than 30 characters'
+        v => (v && v.length <= 30) || 'Name must be less than 30 characters'
       ],
       initialBalanceRules: [
         v => !!v || 'Initial balance is required',
         v => /[0-9]|\./.test(v) || 'Initial balance must be valid number'
       ],
-      colors: []
+      backgroundColors: [],
+      textColors: [{hex: '#000000', name: 'black'}, {hex: '#ffffff', name: 'white'}]
     }
   },
   methods: {
@@ -78,23 +102,31 @@ export default {
       this.$emit('form-closed', false)
     },
     save: function () {
-      const doc = {
-        name: this.name,
-        initialBalance: this.initialBalance,
-        color: this.color.hex,
-        colorText: this.calculateTextColor(this.color.name)
+      if (this.$refs.form.validate()) {
+        const doc = {
+          name: this.account.name,
+          initialBalance: this.account.initialBalance,
+          amount: this.account.initialBalance,
+          color: this.account.color,
+          colorText: this.account.colorText
+        }
+
+        AccountManager
+          .save(AccountManager.getModelInstance(doc).toObject(), this.account.id)
+          .then(() => {
+            this.close()
+          })
       }
-      console.log(doc)
-      this.$emit('form-closed', false)
     },
     calculateTextColor: function (colorName) {
-      return (colorName.startsWith('lighten') || colorName === 'white' ? 'black' : 'white')
+      return (!colorName || colorName.startsWith('lighten') || colorName === 'white' ? 'black' : 'white')
     }
   },
   created: function () {
+    // set background colors
     for (const colorGroup in colors) {
       for (const colorKey in colors[colorGroup]) {
-        this.colors.push({hex: colors[colorGroup][colorKey], name: colorKey})
+        this.backgroundColors.push({hex: colors[colorGroup][colorKey], name: colorKey})
       }
     }
   }

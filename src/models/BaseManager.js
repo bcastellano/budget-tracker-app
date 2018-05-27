@@ -6,6 +6,39 @@ export default class BaseManager {
   }
 
   /**
+   * Get instance of actual manager main model
+   * @param {object} obj data
+   */
+  getModelInstance (obj) {
+    throw new Error('This method "getModelInstance" must be overrided')
+  }
+
+  /**
+   * Retrive list of documents
+   */
+  async list () {
+    const list = await db.collection(this.collection)
+      .get()
+      .then(querySnapshot => {
+        this.log('Document list retrieved successfully')
+        let items = []
+        querySnapshot.forEach(doc => {
+          items.push(this.getModelInstance({
+            id: doc.id,
+            ...doc.data()
+          }))
+        })
+
+        return items
+      })
+      .catch(function (error) {
+        console.log('Error getting documents: ', error)
+      })
+
+    return list
+  }
+
+  /**
    * Get user from collection with UID
    * @param {string} id UID identifier
    */
@@ -27,6 +60,7 @@ export default class BaseManager {
    * @param {string} id Optional
    */
   save (obj, id) {
+    console.log(obj, id)
     let successFn = (docRef) => {
       if (docRef) {
         this.log('Document written with ID: ', docRef)
@@ -40,13 +74,13 @@ export default class BaseManager {
     }
 
     if (id) {
-      db.collection(this.collection)
+      return db.collection(this.collection)
         .doc(id)
         .set(obj)
         .then(successFn)
         .catch(errorFn)
     } else {
-      db.collection(this.collection)
+      return db.collection(this.collection)
         .add(obj)
         .then(successFn)
         .catch(errorFn)
