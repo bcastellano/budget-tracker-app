@@ -1,4 +1,4 @@
-import { db } from '@/helpers/firebaseConfig'
+import { db, auth } from '@/helpers/firebaseConfig'
 
 export default class BaseManager {
   constructor (collection) {
@@ -18,6 +18,7 @@ export default class BaseManager {
    */
   async list () {
     const list = await db.collection(this.collection)
+      .where('userId', '==', auth.currentUser.uid)
       .get()
       .then(querySnapshot => {
         this.log('Document list retrieved successfully')

@@ -22,7 +22,9 @@ export default {
   },
   created () {
     AccountManager.list().then(list => {
-      this.accountList = list
+      if (list) {
+        this.accountList = list
+      }
     })
   }
 }

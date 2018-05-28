@@ -73,6 +73,7 @@
 </template>
 
 <script>
+import store from '@/store'
 import colors from 'vuetify/es5/util/colors'
 import {AccountManager} from '@/models/Account'
 
@@ -108,7 +109,8 @@ export default {
           initialBalance: this.account.initialBalance,
           amount: this.account.initialBalance,
           color: this.account.color,
-          colorText: this.account.colorText
+          colorText: this.account.colorText,
+          userId: store.getters.user.uid
         }
 
         AccountManager

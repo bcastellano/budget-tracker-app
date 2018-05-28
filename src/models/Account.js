@@ -13,6 +13,7 @@ export class Account extends BaseModel {
     this.amount = obj.amount
     this.color = obj.color
     this.colorText = obj.colorText
+    this.userId = obj.userId
   }
 }
 
