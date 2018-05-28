@@ -61,7 +61,7 @@ new Vue({
 
         var user = await UserManager.get(authUser.uid)
         if (!user) {
-          UserManager.save((new User(authUser)).toObject(), authUser.id)
+          UserManager.save((new User(authUser)).toObject(), authUser.uid)
         }
       } else {
         this.$router.push({name: 'auth'})

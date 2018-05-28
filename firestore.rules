@@ -2,7 +2,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{id} {
       allow read, update: if request.auth.uid == id;
-      allow create: if request.auth.uid != null;
+      allow create: if request.auth.uid != null && request.auth.uid == id;
     }
     match /accounts/{id} {
       allow read, write: if request.auth.uid == resource.data.userId;
