@@ -105,6 +105,7 @@ export default {
     save: function () {
       if (this.$refs.form.validate()) {
         const doc = {
+          id: this.account.id,
           name: this.account.name,
           initialBalance: this.account.initialBalance,
           amount: this.account.initialBalance,

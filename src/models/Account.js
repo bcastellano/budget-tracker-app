@@ -14,6 +14,9 @@ export class Account extends BaseModel {
     this.color = obj.color
     this.colorText = obj.colorText
     this.userId = obj.userId
+    if (obj.createdAt) {
+      this.createdAt = obj.createdAt.seconds
+    }
   }
 }
 

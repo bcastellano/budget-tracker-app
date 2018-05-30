@@ -1,8 +1,6 @@
-export default class BaseModel {
-  constructor () {
-    this.createdAt = new Date()
-  }
+import firebase from '@firebase/app'
 
+export default class BaseModel {
   /**
    * Convert this Object class into plain object with its properties
    */
@@ -14,6 +12,18 @@ export default class BaseModel {
       }
     })
 
+    // add created at in creation mode
+    if (this.$isNew()) {
+      obj.createdAt = firebase.firestore.FieldValue.serverTimestamp()
+    }
+
     return obj
+  }
+
+  /**
+   * Return if instance is new object or existing one
+   */
+  $isNew () {
+    return !this.id
   }
 }

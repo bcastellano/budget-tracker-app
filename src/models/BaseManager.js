@@ -61,7 +61,6 @@ export default class BaseManager {
    * @param {string} id Optional
    */
   save (obj, id) {
-    console.log(obj, id)
     let successFn = (docRef) => {
       if (docRef) {
         this.log('Document written with ID: ', docRef)
@@ -77,7 +76,7 @@ export default class BaseManager {
     if (id) {
       return db.collection(this.collection)
         .doc(id)
-        .set(obj)
+        .set(obj, {merge: true})
         .then(successFn)
         .catch(errorFn)
     } else {
