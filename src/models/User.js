@@ -10,7 +10,8 @@ export class User extends BaseModel {
     this.id = firebaseUser.uid
     this.name = firebaseUser.displayName
     this.email = firebaseUser.email
-    this.providerId = firebaseUser.providerId
+    this.providerId = firebaseUser.providerData[0].providerId
+    this.createdAt = new Date(firebaseUser.metadata.creationTime)
   }
 }
 
