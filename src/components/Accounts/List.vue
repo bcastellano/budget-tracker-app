@@ -39,20 +39,26 @@
 
 <script>
 import AccountForm from './Form'
+import {AccountManager} from '@/models/Account'
 
 export default {
   name: 'AccountList',
-  props: {
-    list: Array
-  },
   components: {
     AccountForm
   },
   data () {
     return {
       formOpened: false,
-      accountData: {}
+      accountData: {},
+      list: []
     }
+  },
+  created () {
+    AccountManager.list().then(list => {
+      if (list) {
+        this.list = list
+      }
+    })
   },
   methods: {
     openForm: function (account) {
