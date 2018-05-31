@@ -2,6 +2,7 @@
   <div>
     <v-card>
       <v-container fluid style="min-height: 0;" grid-list-lg>
+        {{list.length}} accounts
         <v-layout v-if="list.length == 0" row wrap>
           <v-flex xs12 text-xs-center>
             <span>
@@ -53,16 +54,14 @@ export default {
       list: []
     }
   },
-  created () {
-    AccountManager.list().then(list => {
-      if (list) {
-        this.list = list
-      }
-    })
+  firestore () {
+    return {
+      list: AccountManager.listRealtime()
+    }
   },
   methods: {
     openForm: function (account) {
-      this.accountData = Object.assign({}, account)
+      this.accountData = Object.assign(account ? {id: account.id} : {}, account)
       this.formOpened = true
     },
     closeForm: function (event) {

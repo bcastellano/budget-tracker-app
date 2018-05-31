@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import './registerServiceWorker'
 import Vuetify from 'vuetify'
+import VueFire from 'vuefire'
 import 'vuetify/dist/vuetify.min.css'
 import colors from 'vuetify/es5/util/colors'
 import { auth } from './helpers/firebaseConfig'
@@ -18,6 +19,8 @@ Vue.use(Vuetify, {
     accent: colors.green.accent2
   }
 })
+
+Vue.use(VueFire)
 
 function requiredAuth (to, from, next) {
   console.log('%croute', `background: blue; color: white; padding: 2px 0.5em; border-radius: 0.5em;`, from.path + ' => ' + to.path)

@@ -40,6 +40,17 @@ export default class BaseManager {
   }
 
   /**
+   * Get list of documents for realtime
+   */
+  listRealtime () {
+    const list = db
+      .collection(this.collection)
+      .where('userId', '==', auth.currentUser.uid)
+
+    return list
+  }
+
+  /**
    * Get user from collection with UID
    * @param {string} id UID identifier
    */
