@@ -76,6 +76,7 @@
 import store from '@/store'
 import colors from 'vuetify/es5/util/colors'
 import {AccountManager} from '@/models/Account'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'AccountForm',
@@ -117,13 +118,15 @@ export default {
         AccountManager
           .save(AccountManager.getModelInstance(doc).toObject(), this.account.id)
           .then(() => {
+            this.addMessage({text: `Account "${doc.name}" saved`, type: 'success'})
             this.close()
           })
       }
     },
     calculateTextColor: function (colorName) {
       return (!colorName || colorName.startsWith('lighten') || colorName === 'white' ? 'black' : 'white')
-    }
+    },
+    ...mapActions({addMessage: 'ADD_MESSAGE'})
   },
   created: function () {
     // set background colors
