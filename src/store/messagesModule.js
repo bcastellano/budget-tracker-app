@@ -6,7 +6,7 @@ const state = {
 }
 
 const actions = {
-  ADD_MESSAGE ({ commit }, { text, type = 'info', timeout = 2000 }) {
+  addMessage ({ commit }, { text, type = 'info', timeout = 2000 }) {
     const id = ++maxMessageId
     const message = {
       id: id,
@@ -22,7 +22,7 @@ const actions = {
 
     commit('ADD_MESSAGE', message)
   },
-  REMOVE_MESSAGE ({ commit }, id) {
+  removeMessage ({ commit }, id) {
     commit('REMOVE_MESSAGE', id)
   }
 }

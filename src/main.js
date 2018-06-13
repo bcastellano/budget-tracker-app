@@ -55,7 +55,7 @@ new Vue({
   store,
   created () {
     auth.onAuthStateChanged(async (authUser) => {
-      store.commit('auth/SET_USER', authUser)
+      store.dispatch('auth/setUser', authUser)
       if (authUser) {
         // go to remembered url if exists
         if (this.$route.query.to) {

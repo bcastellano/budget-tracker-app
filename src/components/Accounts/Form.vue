@@ -117,7 +117,7 @@ export default {
         AccountManager
           .save(AccountManager.getModelInstance(doc).toObject(), this.account.id)
           .then(() => {
-            this.ADD_MESSAGE({text: `Account "${doc.name}" saved`, type: 'success'})
+            this.addMessage({text: `Account "${doc.name}" saved`, type: 'success'})
             this.close()
           })
       }
@@ -125,7 +125,7 @@ export default {
     calculateTextColor: function (colorName) {
       return (!colorName || colorName.startsWith('lighten') || colorName === 'white' ? 'black' : 'white')
     },
-    ...mapActions('messages', ['ADD_MESSAGE'])
+    ...mapActions('messages', ['addMessage'])
   },
   created: function () {
     // set background colors
