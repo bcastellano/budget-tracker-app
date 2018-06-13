@@ -12,7 +12,6 @@ export class Account extends BaseModel {
     this.initialBalance = obj.initialBalance
     this.amount = obj.amount
     this.color = obj.color
-    this.colorText = obj.colorText
     this.userId = obj.userId
     if (obj.createdAt) {
       this.createdAt = obj.createdAt.seconds

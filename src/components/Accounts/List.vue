@@ -16,13 +16,13 @@
 
         <v-layout v-if="list.length > 0" v-for="account in list" :key="account.name" row wrap>
           <v-flex xs12>
-            <v-card :style="{ 'background-color': account.color, 'color': account.colorText }">
+            <v-card class="border" :style="{ 'border-color': account.color }">
               <v-card-title>
-                <div class="headline"><v-icon x-large dark>account_balance</v-icon>{{ account.name }}</div>
+                <div class="headline"><v-icon x-large>account_balance</v-icon>{{ account.name }}</div>
                 <div>Total money <strong>{{ account.amount }}</strong>€</div>
               </v-card-title>
               <v-card-actions>
-                <v-btn flat dark @click="openForm(account)">edit</v-btn>
+                <v-btn color="secondary" @click="openForm(account)">edit</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -71,3 +71,7 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.border.card { border-right:solid 5px; }
+</style>

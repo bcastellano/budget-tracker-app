@@ -50,21 +50,6 @@
                 ></v-list-tile-title>
               </template>
             </v-select>
-
-            <v-select :items="textColors" item-value="hex" v-model="account.colorText" label="Select text color">
-              <template slot="selection" slot-scope="data">
-                <v-list-tile-title
-                  v-text="data.item.name"
-                  :style="{ 'background-color': data.item.hex, 'color': calculateTextColor(data.item.name) }"
-                ></v-list-tile-title>
-              </template>
-              <template slot="item" slot-scope="data">
-                <v-list-tile-title
-                  v-text="data.item.name"
-                  :style="{ 'background-color': data.item.hex, 'color': calculateTextColor(data.item.name) }"
-                ></v-list-tile-title>
-              </template>
-            </v-select>
           </v-form>
         </v-card-text>
       </v-card>
@@ -94,8 +79,7 @@ export default {
         v => !!v || 'Initial balance is required',
         v => /[0-9]|\./.test(v) || 'Initial balance must be valid number'
       ],
-      backgroundColors: [],
-      textColors: [{hex: '#000000', name: 'black'}, {hex: '#ffffff', name: 'white'}]
+      backgroundColors: []
     }
   },
   methods: {
@@ -110,7 +94,6 @@ export default {
           initialBalance: this.account.initialBalance,
           amount: this.account.initialBalance,
           color: this.account.color,
-          colorText: this.account.colorText,
           userId: this.$store.getters['auth/user'].uid
         }
 
