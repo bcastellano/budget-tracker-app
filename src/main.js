@@ -26,7 +26,7 @@ function requiredAuth (to, from, next) {
   console.log('%croute', `background: blue; color: white; padding: 2px 0.5em; border-radius: 0.5em;`, from.path + ' => ' + to.path)
 
   if (
-    store.getters.user == null &&
+    store.getters['auth/user'] == null &&
     to.matched.some(route => route.meta.secured === true)
   ) {
     // Cancel this routing and replace with unlogged entry point. Remember url to go when logged
@@ -36,7 +36,7 @@ function requiredAuth (to, from, next) {
   }
 
   if (
-    store.getters.user !== null &&
+    store.getters['auth/user'] !== null &&
     to.name === 'auth'
   ) {
     // Cancel this routing and replace with unlogged entry point
@@ -55,7 +55,7 @@ new Vue({
   store,
   created () {
     auth.onAuthStateChanged(async (authUser) => {
-      store.commit('SET_USER', authUser)
+      store.commit('auth/SET_USER', authUser)
       if (authUser) {
         // go to remembered url if exists
         if (this.$route.query.to) {

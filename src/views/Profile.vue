@@ -23,7 +23,7 @@ export default {
     }
   },
   created () {
-    this.user = store.getters.user
+    this.user = store.getters['auth/user']
     if (this.user) {
       this.name = this.user.displayName
       this.email = this.user.email

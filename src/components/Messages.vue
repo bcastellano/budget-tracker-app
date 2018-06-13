@@ -18,8 +18,8 @@ export default {
   computed: {
     messages () {
       let messages = []
-      if (this.$store.getters.messages.length > 0) {
-        messages = this.$store.getters.messages
+      if (this.$store.getters['messages/messages'].length > 0) {
+        messages = this.$store.getters['messages/messages']
         // show first message and execute remove countdown
         messages[0].show = true
         messages[0].remove() // this trigger next message displayed

@@ -17,12 +17,13 @@
 
 <script>
 import firebase from 'firebase'
-import store from '@/store'
 
 export default {
   name: 'Toolbar',
   computed: {
-    email: () => store.getters.user.email
+    email () {
+      return this.$store.getters['auth/user'].email
+    }
   },
   data () {
     return {

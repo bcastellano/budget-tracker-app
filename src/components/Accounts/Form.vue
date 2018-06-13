@@ -73,9 +73,8 @@
 </template>
 
 <script>
-import store from '@/store'
 import colors from 'vuetify/es5/util/colors'
-import {AccountManager} from '@/models/Account'
+import { AccountManager } from '@/models/Account'
 import { mapActions } from 'vuex'
 
 export default {
@@ -112,13 +111,13 @@ export default {
           amount: this.account.initialBalance,
           color: this.account.color,
           colorText: this.account.colorText,
-          userId: store.getters.user.uid
+          userId: this.$store.getters['auth/user'].uid
         }
 
         AccountManager
           .save(AccountManager.getModelInstance(doc).toObject(), this.account.id)
           .then(() => {
-            this.addMessage({text: `Account "${doc.name}" saved`, type: 'success'})
+            this.ADD_MESSAGE({text: `Account "${doc.name}" saved`, type: 'success'})
             this.close()
           })
       }
@@ -126,7 +125,7 @@ export default {
     calculateTextColor: function (colorName) {
       return (!colorName || colorName.startsWith('lighten') || colorName === 'white' ? 'black' : 'white')
     },
-    ...mapActions({addMessage: 'ADD_MESSAGE'})
+    ...mapActions('messages', ['ADD_MESSAGE'])
   },
   created: function () {
     // set background colors
