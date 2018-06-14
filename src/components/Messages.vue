@@ -7,7 +7,7 @@
       bottom right
     >
       {{ message.text }}
-      <v-btn flat @click.native="message.show = false">Close</v-btn>
+      <v-btn flat @click.native="close(message.id)">Close</v-btn>
     </v-snackbar>
   </div>
 </template>
@@ -26,6 +26,11 @@ export default {
       }
 
       return messages
+    }
+  },
+  methods: {
+    close (id) {
+      this.$store.dispatch('messages/removeMessage', id)
     }
   }
 }
