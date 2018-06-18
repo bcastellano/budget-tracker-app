@@ -13,6 +13,7 @@ export class Account extends BaseModel {
     this.amount = obj.amount
     this.color = obj.color
     this.userId = obj.userId
+    this.image = obj.image || null
     if (obj.createdAt) {
       this.createdAt = obj.createdAt.seconds
     }

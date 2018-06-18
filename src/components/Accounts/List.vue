@@ -17,13 +17,24 @@
         <v-layout v-if="list.length > 0" v-for="account in list" :key="account.name" row wrap>
           <v-flex xs12>
             <v-card class="border" :style="{ 'border-color': account.color }">
-              <v-card-title>
-                <div class="headline"><v-icon x-large>account_balance</v-icon>{{ account.name }}</div>
-                <div>Total money <strong>{{ account.amount }}</strong>€</div>
-              </v-card-title>
-              <v-card-actions>
-                <v-btn color="secondary" @click="openForm(account)">edit</v-btn>
-              </v-card-actions>
+              <v-container fluid grid-list-xs>
+                <v-layout row>
+                  <v-flex xs3>
+                    <v-card-media contain :src="account.image" width="125px" height="125px"></v-card-media>
+                  </v-flex>
+                  <v-flex>
+                    <v-card-title>
+                      <div>
+                        <div class="headline">{{ account.name }}</div>
+                        <div>Total money <strong>{{ account.amount }}</strong>€</div>
+                      </div>
+                    </v-card-title>
+                    <v-card-actions>
+                      <v-btn color="secondary" @click="openForm(account)">edit</v-btn>
+                    </v-card-actions>
+                  </v-flex>
+                </v-layout>
+              </v-container>
             </v-card>
           </v-flex>
         </v-layout>

@@ -98,6 +98,13 @@ export default class BaseManager {
     }
   }
 
+  /**
+   * Get new doc identifier
+   */
+  newRef () {
+    return db.collection(this.collection).doc()
+  }
+
   log (...messages) {
     console.log('%cdatabase', `background: green; color: white; padding: 2px 0.5em; border-radius: 0.5em;`, ...messages)
   }

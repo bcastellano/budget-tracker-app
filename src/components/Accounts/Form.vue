@@ -21,6 +21,11 @@
               disabled
             ></v-text-field>
 
+            <div>
+              <img :src="account.image" @click="$refs.fileInput.click()">
+              <input ref="fileInput" type="file" @change="handleFileChange" accept="image/*" />
+            </div>
+
             <v-text-field
               v-model="account.name"
               :rules="nameRules"
@@ -61,6 +66,7 @@
 import colors from 'vuetify/es5/util/colors'
 import { AccountManager } from '@/models/Account'
 import { mapActions } from 'vuex'
+import { storage } from '@/helpers/firebaseConfig'
 
 export default {
   name: 'AccountForm',
@@ -79,22 +85,36 @@ export default {
         v => !!v || 'Initial balance is required',
         v => /[0-9]|\./.test(v) || 'Initial balance must be valid number'
       ],
-      backgroundColors: []
+      backgroundColors: [],
+      imageFile: null
     }
   },
   methods: {
     close: function () {
       this.$emit('form-closed', false)
+      this.$refs.fileInput.value = ''
     },
-    save: function () {
+    save: async function () {
       if (this.$refs.form.validate()) {
+        // is new object, create objref to get id
+        if (!this.account.id) {
+          this.account.id = AccountManager.newRef().id
+        }
+
         const doc = {
           id: this.account.id,
           name: this.account.name,
           initialBalance: this.account.initialBalance,
           amount: this.account.initialBalance,
           color: this.account.color,
-          userId: this.$store.getters['auth/user'].uid
+          userId: this.$store.getters['auth/user'].uid,
+          image: this.account.image || null
+        }
+
+        if (this.imageFile) {
+          const ref = storage.ref().child(`user/${doc.userId}/accounts/${doc.id}`)
+          await ref.put(this.imageFile)
+          doc.image = await ref.getDownloadURL()
         }
 
         AccountManager
@@ -104,6 +124,9 @@ export default {
             this.close()
           })
       }
+    },
+    handleFileChange: function (e) {
+      this.imageFile = e.target.files[0]
     },
     calculateTextColor: function (colorName) {
       return (!colorName || colorName.startsWith('lighten') || colorName === 'white' ? 'black' : 'white')
