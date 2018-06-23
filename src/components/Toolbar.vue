@@ -34,7 +34,11 @@ export default {
     drawer: Boolean
   },
   methods: {
-    logOut: () => firebase.auth().signOut()
+    logOut () {
+      firebase.auth().signOut()
+      this.$store.dispatch('auth/setUser', null)
+      this.$router.push({name: 'auth'})
+    }
   }
 }
 </script>
