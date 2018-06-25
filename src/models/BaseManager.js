@@ -47,6 +47,8 @@ export default class BaseManager {
       .collection(this.collection)
       .where('userId', '==', auth.currentUser.uid)
 
+    this.log('Document list realtime retrieved successfully')
+
     return list
   }
 

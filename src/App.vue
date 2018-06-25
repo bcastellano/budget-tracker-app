@@ -1,6 +1,7 @@
 <template>
   <v-app id="app">
     <Messages />
+    <Confirm ref="confirm"></Confirm>
 
     <router-view/>
   </v-app>
@@ -8,10 +9,15 @@
 
 <script>
 import Messages from '@/components/Messages'
+import Confirm from '@/components/Confirm'
 
 export default {
+  mounted () {
+    this.$root.$confirm = this.$refs.confirm.open
+  },
   components: {
-    Messages
+    Messages,
+    Confirm
   }
 }
 </script>

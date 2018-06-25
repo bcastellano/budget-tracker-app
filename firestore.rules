@@ -19,6 +19,10 @@ service cloud.firestore {
     match /categories/{id} {
       allow read, write: if owner();
     }
+    // Movement Model
+    match /movements/{id} {
+      allow read, write: if owner();
+    }
     // Default
     match /{document=**} {
       allow read, write: if false;
