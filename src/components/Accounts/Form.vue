@@ -18,6 +18,7 @@
               v-if="account.id"
               v-model="account.id"
               label="Id"
+              prepend-icon="fingerprint"
               disabled
             ></v-text-field>
 
@@ -31,6 +32,7 @@
               :rules="nameRules"
               :counter="30"
               label="Name"
+              prepend-icon="description"
               required
             ></v-text-field>
 
@@ -38,10 +40,17 @@
               v-model="account.initialBalance"
               :rules="initialBalanceRules"
               label="Initial balance"
+              prepend-icon="euro_symbol"
               required
             ></v-text-field>
 
-            <v-select :items="backgroundColors" item-value="hex" v-model="account.color" label="Select background color">
+            <v-select
+              :items="backgroundColors"
+              item-value="hex"
+              v-model="account.color"
+              label="Select color"
+              prepend-icon="border_color"
+            >
               <template slot="selection" slot-scope="data">
                 <v-list-tile-title
                   v-text="data.item.name"

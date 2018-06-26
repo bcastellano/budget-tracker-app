@@ -18,6 +18,7 @@
               v-if="category.id"
               v-model="category.id"
               label="Id"
+              prepend-icon="fingerprint"
               disabled
             ></v-text-field>
 
@@ -26,6 +27,7 @@
               :rules="nameRules"
               :counter="30"
               label="Name"
+              prepend-icon="description"
               required
             ></v-text-field>
 

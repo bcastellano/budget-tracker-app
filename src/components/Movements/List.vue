@@ -44,9 +44,9 @@
         </v-btn>
       </v-card>
 
-      <MovementForm 
-        :opened="formOpened" 
-        :movement="movementData" 
+      <MovementForm
+        :opened="formOpened"
+        :movement="movementData"
         :accounts="accounts"
         :categories="categories"
         v-on:form-closed="closeForm($event)"
