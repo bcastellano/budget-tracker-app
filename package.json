@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "firebaseui": "^2.7.0",
+    "lodash": "^4.17.10",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.13",
     "vue-router": "^3.0.1",

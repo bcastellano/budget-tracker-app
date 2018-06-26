@@ -19,14 +19,13 @@
           :search="search"
         >
           <template slot="items" slot-scope="props">
-            <td>{{ props.item.id }}</td>
-            <td class="text-xs-right">{{ props.item.description }}</td>
-            <td class="text-xs-right">{{ props.item.amount }}</td>
-            <td class="text-xs-right">{{ props.item.type }}</td>
-            <td class="text-xs-right">{{ props.item.categoryId }}</td>
-            <td class="text-xs-right">{{ props.item.accountId }}</td>
-            <td class="text-xs-right">{{ props.item.date }}</td>
-            <td class="justify-center layout px-0">
+            <td>{{ props.item.description }}</td>
+            <td>{{ props.item.amount }}</td>
+            <td>{{ props.item.type }}</td>
+            <td>{{ getCategoryName(props.item.categoryId) }}</td>
+            <td>{{ getAccountName(props.item.accountId) }}</td>
+            <td>{{ props.item.date }}</td>
+            <td>
               <v-btn icon class="mx-0" @click="openForm(props.item)">
                 <v-icon>edit</v-icon>
               </v-btn>
@@ -45,7 +44,13 @@
         </v-btn>
       </v-card>
 
-      <MovementForm :opened="formOpened" :movement="movementData" v-on:form-closed="closeForm($event)" />
+      <MovementForm 
+        :opened="formOpened" 
+        :movement="movementData" 
+        :accounts="accounts"
+        :categories="categories"
+        v-on:form-closed="closeForm($event)"
+      ></MovementForm>
     </v-flex>
   </v-layout>
 </template>
@@ -53,7 +58,10 @@
 <script>
 import MovementForm from './Form'
 import { MovementManager } from '@/models/Movement'
+import { AccountManager } from '@/models/Account'
+import { CategoryManager } from '@/models/Category'
 import { mapActions } from 'vuex'
+import _ from 'lodash/collection'
 
 export default {
   name: 'MovementList',
@@ -67,20 +75,21 @@ export default {
       list: [],
       search: '',
       headers: [
-        {
-          text: 'ID',
-          align: 'left',
-          sortable: false,
-          value: 'id'
-        },
-        { text: 'Description', value: 'description' },
+        { text: 'Description', sortable: false, value: 'description' },
         { text: 'Amount (€)', value: 'amount' },
         { text: 'Type', value: 'type' },
         { text: 'Category', value: 'categoryId' },
         { text: 'Account', value: 'accountId' },
-        { text: 'Date', value: 'date' }
-      ]
+        { text: 'Date', value: 'date' },
+        { text: 'actions' }
+      ],
+      accounts: [],
+      categories: []
     }
+  },
+  async created () {
+    this.accounts = await AccountManager.list()
+    this.categories = await CategoryManager.list()
   },
   firestore () {
     return {
@@ -104,6 +113,14 @@ export default {
             this.addMessage({text: `Movement "${movement.description}" deleted`, type: 'success'})
           }
         })
+    },
+    getAccountName: function (id) {
+      const obj = _.find(this.accounts, { 'id': id })
+      return obj ? obj.name : id
+    },
+    getCategoryName: function (id) {
+      const obj = _.find(this.categories, { 'id': id })
+      return obj ? obj.name : id
     },
     ...mapActions('messages', ['addMessage'])
   }

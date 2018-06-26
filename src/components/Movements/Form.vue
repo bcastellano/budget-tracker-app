@@ -99,15 +99,15 @@
 
 <script>
 import { MovementManager } from '@/models/Movement'
-import { AccountManager } from '@/models/Account'
-import { CategoryManager } from '@/models/Category'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'MovementForm',
   props: {
     opened: Boolean,
-    movement: Object
+    movement: Object,
+    accounts: Array,
+    categories: Array
   },
   data () {
     return {
@@ -117,14 +117,8 @@ export default {
       descriptionRules: [
         v => !!v || 'Description is required',
         v => (v && v.length <= 30) || 'Description must be less than 30 characters'
-      ],
-      accounts: [],
-      categories: []
+      ]
     }
-  },
-  async created () {
-    this.accounts = await AccountManager.list()
-    this.categories = await CategoryManager.list()
   },
   methods: {
     close: function () {
