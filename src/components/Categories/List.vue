@@ -17,7 +17,7 @@
         <v-list v-if="list.length > 0">
           <v-list-tile v-for="category in list" :key="category.name" @click="openForm(category)">
             <v-list-tile-action>
-              <v-icon color="pink">star</v-icon>
+              <v-icon :style="{ 'color': category.color }">{{category.icon}}</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title v-text="category.name"></v-list-tile-title>

@@ -31,6 +31,62 @@
               required
             ></v-text-field>
 
+            <v-layout row wrap>
+              <v-flex xs3>
+                <v-text-field
+                  v-model="category.icon"
+                  label="Icon"
+                  prepend-icon="insert_photo"
+                  required
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs2>
+                <v-btn outline @click.stop="iconsDialog=true">choose</v-btn>
+              </v-flex>
+
+              <v-dialog v-model="iconsDialog" max-width="500px">
+                <v-card>
+                  <v-card-title>
+                    Choose icon
+                  </v-card-title>
+                  <v-card-text>
+                    <v-icon
+                      class="ma-3"
+                      v-for="icon in icons"
+                      :key="icon"
+                      x-large
+                      @click="category.icon=icon;iconsDialog=false"
+                      style="cursor:pointer"
+                    >{{icon}}</v-icon>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn color="primary" flat @click.stop="iconsDialog=false">Close</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-layout>
+
+            <v-select
+              :items="backgroundColors"
+              item-value="hex"
+              v-model="category.color"
+              label="Select color"
+              prepend-icon="border_color"
+            >
+              <template slot="selection" slot-scope="data">
+                <v-list-tile-title
+                  v-text="data.item.name"
+                  :style="{ 'background-color': data.item.hex, 'color': calculateTextColor(data.item.name) }"
+                ></v-list-tile-title>
+              </template>
+              <template slot="item" slot-scope="data">
+                <v-list-tile-title
+                  v-text="data.item.name"
+                  :style="{ 'background-color': data.item.hex, 'color': calculateTextColor(data.item.name) }"
+                ></v-list-tile-title>
+              </template>
+            </v-select>
+
           </v-form>
         </v-card-text>
       </v-card>
@@ -39,6 +95,7 @@
 </template>
 
 <script>
+import colors from 'vuetify/es5/util/colors'
 import { CategoryManager } from '@/models/Category'
 import { mapActions } from 'vuex'
 
@@ -54,7 +111,12 @@ export default {
       nameRules: [
         v => !!v || 'Name is required',
         v => (v && v.length <= 30) || 'Name must be less than 30 characters'
-      ]
+      ],
+      backgroundColors: [],
+      icons: [
+        'account_balance', 'account_balance_wallet', 'android', 'assessment', 'book', 'build', 'card_giftcard', 'card_travel', 'commute', 'dns', 'flight_takeoff','home', 'pets', 'shop', 'shopping_cart'
+      ],
+      iconsDialog: false
     }
   },
   methods: {
@@ -65,6 +127,8 @@ export default {
       if (this.$refs.form.validate()) {
         const doc = {
           name: this.category.name,
+          icon: this.category.icon,
+          color: this.category.color,
           userId: this.$store.getters['auth/user'].uid
         }
 
@@ -76,7 +140,16 @@ export default {
           })
       }
     },
+    calculateTextColor: function (colorName) {
+      return (!colorName || colorName.startsWith('lighten') || colorName === 'white' ? 'black' : 'white')
+    },
     ...mapActions('messages', ['addMessage'])
+  },
+  created: function () {
+    // set background colors
+    for (const colorGroup in colors) {
+      this.backgroundColors.push({hex: colors[colorGroup]['base'], name: colorGroup})
+    }
   }
 }
 </script>

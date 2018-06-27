@@ -9,6 +9,8 @@ export class Category extends BaseModel {
     super()
     this.id = obj.id
     this.name = obj.name
+    this.icon = obj.icon
+    this.color = obj.color
     this.userId = obj.userId
     if (obj.createdAt) {
       this.createdAt = obj.createdAt.seconds
