@@ -11,7 +11,7 @@ export class Movement extends BaseModel {
     super()
     this.id = obj.id
     this.description = obj.description
-    this.amount = obj.amount
+    this.amount = parseFloat(obj.amount)
     this.type = obj.type
     this.date = obj.date
     this.accountId = obj.accountId

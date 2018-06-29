@@ -10,7 +10,7 @@ export class Account extends BaseModel {
     super()
     this.id = obj.id
     this.name = obj.name
-    this.initialBalance = obj.initialBalance
+    this.initialBalance = parseFloat(obj.initialBalance)
     this.color = obj.color
     this.image = obj.image || null
     this.createdAt = obj.createdAt
