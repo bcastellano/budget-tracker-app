@@ -89,7 +89,7 @@ export default class BaseManager {
     if (id) {
       return db.collection(this.collection)
         .doc(id)
-        .set(obj, {merge: true})
+        .set(obj)
         .then(successFn)
         .catch(errorFn)
     } else {

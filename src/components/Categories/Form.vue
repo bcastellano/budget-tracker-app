@@ -87,6 +87,16 @@
               </template>
             </v-select>
 
+            <v-select
+              v-model="tags"
+              label="Tags"
+              chips
+              tags
+              deletable-chips
+              prepend-icon="local_offer"
+              ref="tags"
+            ></v-select>
+
           </v-form>
         </v-card-text>
       </v-card>
@@ -96,7 +106,7 @@
 
 <script>
 import colors from 'vuetify/es5/util/colors'
-import { CategoryManager } from '@/models/Category'
+import { Category, CategoryManager } from '@/models/Category'
 import { mapActions } from 'vuex'
 
 export default {
@@ -119,18 +129,24 @@ export default {
       iconsDialog: false
     }
   },
+  computed: {
+    tags: {
+      get () {
+        return Category.tagToArray(this.category.tags)
+      },
+      set (value) {
+        this.category.tags = Category.tagToObject(value)
+      }
+    }
+  },
   methods: {
     close: function () {
       this.$emit('form-closed', false)
+      this.tags = []
     },
     save: async function () {
       if (this.$refs.form.validate()) {
-        const doc = {
-          name: this.category.name,
-          icon: this.category.icon,
-          color: this.category.color,
-          userId: this.$store.getters['auth/user'].uid
-        }
+        const doc = Object.assign({ userId: this.$store.getters['auth/user'].uid }, this.category)
 
         CategoryManager
           .save(CategoryManager.getModelInstance(doc).toObject(), this.category.id)
