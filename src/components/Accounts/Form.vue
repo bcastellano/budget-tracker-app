@@ -110,16 +110,8 @@ export default {
           this.account.id = AccountManager.newRef().id
         }
 
-        const doc = {
-          id: this.account.id,
-          name: this.account.name,
-          initialBalance: this.account.initialBalance,
-          amount: this.account.initialBalance,
-          color: this.account.color,
-          userId: this.$store.getters['auth/user'].uid,
-          image: this.account.image || null
-        }
-
+        const doc = Object.assign({ userId: this.$store.getters['auth/user'].uid }, this.account)
+console.log(doc)
         if (this.imageFile) {
           const ref = storage.ref().child(`user/${doc.userId}/accounts/${doc.id}`)
           await ref.put(this.imageFile)

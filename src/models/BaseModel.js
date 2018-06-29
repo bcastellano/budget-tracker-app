@@ -12,18 +12,14 @@ export default class BaseModel {
       }
     })
 
-    // add created at in creation mode
-    if (this.$isNew()) {
+    // add created at in if not exists (object is new)
+    if (!this.createdAt) {
       obj.createdAt = firebase.firestore.FieldValue.serverTimestamp()
     }
 
-    return obj
-  }
+    // always add updated at
+    obj.updatedAt = firebase.firestore.FieldValue.serverTimestamp()
 
-  /**
-   * Return if instance is new object or existing one
-   */
-  $isNew () {
-    return !this.id
+    return obj
   }
 }
