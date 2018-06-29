@@ -110,18 +110,18 @@ export default {
           this.account.id = AccountManager.newRef().id
         }
 
-        const doc = Object.assign({ userId: this.$store.getters['auth/user'].uid }, this.account)
+        const userId = this.$store.getters['auth/user'].uid
 
         if (this.imageFile) {
-          const ref = storage.ref().child(`user/${doc.userId}/accounts/${doc.id}`)
+          const ref = storage.ref().child(`user/${userId}/accounts/${this.account.id}`)
           await ref.put(this.imageFile)
-          doc.image = await ref.getDownloadURL()
+          this.account.image = await ref.getDownloadURL()
         }
 
         AccountManager
-          .save(AccountManager.getModelInstance(doc).toObject(), this.account.id)
+          .save(AccountManager.getModelInstance(this.account).toObject(), this.account.id)
           .then(() => {
-            this.addMessage({text: `Account "${doc.name}" saved`, type: 'success'})
+            this.addMessage({text: `Account "${this.account.name}" saved`, type: 'success'})
             this.close()
           })
       }

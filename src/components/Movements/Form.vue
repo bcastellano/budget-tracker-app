@@ -126,12 +126,10 @@ export default {
     },
     save: async function () {
       if (this.$refs.form.validate()) {
-        const doc = Object.assign({ userId: this.$store.getters['auth/user'].uid }, this.movement)
-
         MovementManager
-          .save(MovementManager.getModelInstance(doc).toObject(), this.movement.id)
+          .save(MovementManager.getModelInstance(this.movement).toObject(), this.movement.id)
           .then(() => {
-            this.addMessage({text: `Movement "${doc.name}" saved`, type: 'success'})
+            this.addMessage({text: `Movement "${this.movement.name}" saved`, type: 'success'})
             this.close()
           })
       }

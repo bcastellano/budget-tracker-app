@@ -146,12 +146,10 @@ export default {
     },
     save: async function () {
       if (this.$refs.form.validate()) {
-        const doc = Object.assign({ userId: this.$store.getters['auth/user'].uid }, this.category)
-
         CategoryManager
-          .save(CategoryManager.getModelInstance(doc).toObject(), this.category.id)
+          .save(CategoryManager.getModelInstance(this.category).toObject(), this.category.id)
           .then(() => {
-            this.addMessage({text: `Category "${doc.name}" saved`, type: 'success'})
+            this.addMessage({text: `Category "${this.category.name}" saved`, type: 'success'})
             this.close()
           })
       }

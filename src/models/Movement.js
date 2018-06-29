@@ -1,6 +1,7 @@
 import BaseModel from '@/models/BaseModel'
 import BaseManager from '@/models/BaseManager'
 import { db } from '@/helpers/firebaseConfig'
+import store from '@/store'
 
 /**
  * Movement item from movements collection
@@ -15,8 +16,8 @@ export class Movement extends BaseModel {
     this.date = obj.date
     this.accountId = obj.accountId
     this.categoryId = obj.categoryId
-    this.userId = obj.userId
     this.createdAt = obj.createdAt
+    this.userId = obj.userId || store.getters['auth/user'].uid
   }
 }
 
@@ -29,7 +30,7 @@ class MovementModelManager extends BaseManager {
   }
 
   getModelInstance (obj) {
-    return new Movement(obj)
+    return new Movement(Object.assign({}, obj))
   }
 
   /**
