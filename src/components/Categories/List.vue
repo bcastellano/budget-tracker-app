@@ -16,11 +16,12 @@
 
         <v-list v-if="list.length > 0">
           <v-list-tile v-for="category in list" :key="category.name" @click="openForm(category)">
-            <v-list-tile-action>
+            <v-list-tile-avatar>
               <v-icon :style="{ 'color': category.color }">{{category.icon}}</v-icon>
-            </v-list-tile-action>
+            </v-list-tile-avatar>
             <v-list-tile-content>
-              <v-list-tile-title v-text="category.name"></v-list-tile-title>
+              <v-list-tile-title>{{category.name}}</v-list-tile-title>
+              <v-list-tile-sub-title>{{ parseTags(category.tags) }}</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -37,7 +38,7 @@
 
 <script>
 import CategoryForm from './Form'
-import {CategoryManager} from '@/models/Category'
+import { Category, CategoryManager } from '@/models/Category'
 
 export default {
   name: 'CategoryList',
@@ -64,6 +65,9 @@ export default {
     closeForm: function (event) {
       this.categoryData = {}
       this.formOpened = false
+    },
+    parseTags: function (tags) {
+      return Category.tagToArray(tags).join(' :: ')
     }
   }
 }
