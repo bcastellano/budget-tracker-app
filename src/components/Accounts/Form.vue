@@ -111,7 +111,7 @@ export default {
         }
 
         const doc = Object.assign({ userId: this.$store.getters['auth/user'].uid }, this.account)
-console.log(doc)
+
         if (this.imageFile) {
           const ref = storage.ref().child(`user/${doc.userId}/accounts/${doc.id}`)
           await ref.put(this.imageFile)

@@ -126,15 +126,7 @@ export default {
     },
     save: async function () {
       if (this.$refs.form.validate()) {
-        const doc = {
-          description: this.movement.description,
-          amount: this.movement.amount,
-          type: this.movement.type,
-          date: this.movement.date,
-          accountId: this.movement.accountId,
-          categoryId: this.movement.categoryId,
-          userId: this.$store.getters['auth/user'].uid
-        }
+        const doc = Object.assign({ userId: this.$store.getters['auth/user'].uid }, this.movement)
 
         MovementManager
           .save(MovementManager.getModelInstance(doc).toObject(), this.movement.id)

@@ -16,9 +16,7 @@ export class Movement extends BaseModel {
     this.accountId = obj.accountId
     this.categoryId = obj.categoryId
     this.userId = obj.userId
-    if (obj.createdAt) {
-      this.createdAt = obj.createdAt.seconds
-    }
+    this.createdAt = obj.createdAt
   }
 }
 
