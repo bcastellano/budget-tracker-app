@@ -124,7 +124,7 @@ export default {
       ],
       backgroundColors: [],
       icons: [
-        'account_balance', 'account_balance_wallet', 'android', 'assessment', 'book', 'build', 'card_giftcard', 'card_travel', 'commute', 'dns', 'flight_takeoff','home', 'pets', 'shop', 'shopping_cart'
+        'account_balance', 'account_balance_wallet', 'android', 'assessment', 'book', 'build', 'card_giftcard', 'card_travel', 'commute', 'dns', 'flight_takeoff', 'home', 'pets', 'shop', 'shopping_cart'
       ],
       iconsDialog: false
     }
