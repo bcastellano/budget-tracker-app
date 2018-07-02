@@ -90,6 +90,15 @@
               prepend-icon="label"
             ></v-select>
 
+            <v-select
+              :items="tagItems"
+              v-model="tags"
+              label="Select tags"
+              chips
+              multiple
+              prepend-icon="local_offer"
+            ></v-select>
+
           </v-form>
         </v-card-text>
       </v-card>
@@ -99,7 +108,9 @@
 
 <script>
 import { MovementManager } from '@/models/Movement'
+import { Category } from '@/models/Category'
 import { mapActions } from 'vuex'
+import _ from 'lodash/collection'
 
 export default {
   name: 'MovementForm',
@@ -118,6 +129,22 @@ export default {
         v => !!v || 'Description is required',
         v => (v && v.length <= 30) || 'Description must be less than 30 characters'
       ]
+    }
+  },
+  computed: {
+    tagItems () {
+      if (this.movement.categoryId != null) {
+        return Category.tagToArray(_.find(this.categories, { 'id': this.movement.categoryId }).tags)
+      }
+      return []
+    },
+    tags: {
+      get () {
+        return Category.tagToArray(this.movement.tags)
+      },
+      set (value) {
+        this.movement.tags = Category.tagToObject(value)
+      }
     }
   },
   methods: {
