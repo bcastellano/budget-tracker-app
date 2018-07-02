@@ -133,10 +133,11 @@ export default {
   },
   computed: {
     tagItems () {
-      if (this.movement.categoryId != null) {
+      if (this.movement.categoryId !== undefined) {
         return Category.tagToArray(_.find(this.categories, { 'id': this.movement.categoryId }).tags)
+      } else {
+        return []
       }
-      return []
     },
     tags: {
       get () {
@@ -153,6 +154,8 @@ export default {
     },
     save: async function () {
       if (this.$refs.form.validate()) {
+        this.removeInvalidTags()
+
         MovementManager
           .save(MovementManager.getModelInstance(this.movement).toObject(), this.movement.id)
           .then(() => {
@@ -161,7 +164,15 @@ export default {
           })
       }
     },
-    ...mapActions('messages', ['addMessage'])
+    ...mapActions('messages', ['addMessage']),
+    removeInvalidTags () {
+      const categoryTags = _.find(this.categories, { 'id': this.movement.categoryId }).tags
+      for (const tag in this.movement.tags) {
+        if (!categoryTags[tag]) {
+          delete this.movement.tags[tag]
+        }
+      }
+    }
   }
 }
 </script>
