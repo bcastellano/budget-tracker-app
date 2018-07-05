@@ -1,31 +1,19 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
+'use strict'
 
-admin.initializeApp();
+const movementEvents = require('./app/eventFunctions/movementEvents');
+const accountEvents = require('./app/eventFunctions/accountEvents');
 
 /**
- * Triggers any movement
+ * Expose all functions
  */
-exports.createMovement = functions.firestore
-  .document('movements/{id}')
-  .onCreate((snap, context) => {
-    // Get an object representing the document
-    const movement = snap.data()
+module.exports = Object.assign({},
+  /**
+   * Movement triggers
+   */
+  movementEvents,
 
-    console.log('Creating movement ', context.params.id, movement)
-
-    let amount = movement.amount
-    if (movement.type === 'expense') {
-      amount = (amount * -1)
-    }
-    console.log('Amount ', amount);
-
-    const balance = {balance: {account: amount}}
-
-    console.log('Updating user ', movement.userId)
-
-    return admin.firestore()
-      .collection('users')
-      .doc(movement.userId)
-      .set(balance, {merge: true})
-  })
+  /**
+   * Account triggers
+   */
+  accountEvents
+)
