@@ -16,7 +16,7 @@ export class Movement extends BaseModel {
     this.date = obj.date
     this.accountId = obj.accountId
     this.categoryId = obj.categoryId
-    this.tags = obj.tags
+    this.tags = obj.tags || null
     this.createdAt = obj.createdAt
     this.userId = obj.userId || store.getters['auth/user'].uid
   }

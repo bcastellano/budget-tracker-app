@@ -14,7 +14,7 @@ export class Category extends BaseModel {
     this.name = obj.name
     this.icon = obj.icon
     this.color = obj.color
-    this.tags = obj.tags
+    this.tags = obj.tags || null
     this.createdAt = obj.createdAt
     this.userId = obj.userId || store.getters['auth/user'].uid
   }
