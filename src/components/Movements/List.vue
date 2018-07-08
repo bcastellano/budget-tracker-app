@@ -20,8 +20,7 @@
         >
           <template slot="items" slot-scope="props">
             <td>{{ props.item.description }}</td>
-            <td>{{ props.item.amount }}</td>
-            <td>{{ props.item.type }}</td>
+            <td :class="props.item.type === 'expense' ? 'red--text' : 'green--text'">{{ props.item.type === 'expense' ? '-' : '' }}{{ props.item.amount }}</td>
             <td>{{ getCategoryName(props.item.categoryId) }}</td>
             <td>{{ getAccountName(props.item.accountId) }}</td>
             <td>{{ props.item.date }}</td>
@@ -77,7 +76,6 @@ export default {
       headers: [
         { text: 'Description', sortable: false, value: 'description' },
         { text: 'Amount (€)', value: 'amount' },
-        { text: 'Type', value: 'type' },
         { text: 'Category', value: 'categoryId' },
         { text: 'Account', value: 'accountId' },
         { text: 'Date', value: 'date' },
