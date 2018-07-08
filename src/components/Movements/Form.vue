@@ -31,6 +31,15 @@
               required
             ></v-text-field>
 
+            <v-radio-group
+              v-model="movement.type"
+              row
+              prepend-icon="ballot"
+            >
+              <v-radio color="red" label="Expense" value="expense"></v-radio>
+              <v-radio color="green" label="Income" value="income"></v-radio>
+            </v-radio-group>
+
             <v-text-field
               v-model="movement.amount"
               label="Amount"
@@ -38,17 +47,10 @@
               required
             ></v-text-field>
 
-            <v-select
-              :items="types"
-              v-model="movement.type"
-              label="Select type"
-              prepend-icon="ballot"
-            ></v-select>
-
             <v-flex>
               <v-menu
                 ref="menuDate"
-                :close-on-content-click="true"
+                :close-on-content-click="false"
                 v-model="menuDate"
                 :nudge-right="40"
                 lazy
@@ -124,7 +126,6 @@ export default {
     return {
       valid: false,
       menuDate: false,
-      types: ['expense', 'income'],
       descriptionRules: [
         v => !!v || 'Description is required',
         v => (v && v.length <= 30) || 'Description must be less than 30 characters'
