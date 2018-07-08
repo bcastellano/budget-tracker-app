@@ -15,7 +15,7 @@ exports.createAccount = functions.firestore
     console.log('Created account ', context.params.id, account)
 
     const op = new OperationManager()
-    op.addAccount(context.params.id, account.initialBalance, OperationManager.OP_CREATE)
+    op.addAccount(context.params.id, account.initialBalance, OperationManager.OP_UPDATE)
 
     return UserManager.updateBalance(account.userId, op.getOperations())
   })
