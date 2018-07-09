@@ -39,6 +39,14 @@ class CategoryModelManager extends BaseManager {
   getModelInstance (obj) {
     return new Category(Object.assign({}, obj))
   }
+
+  /**
+   * Get list of documents for realtime
+   */
+  listRealtime () {
+    return super.listRealtime()
+      .orderBy('name', 'asc')
+  }
 }
 
 export const CategoryManager = new CategoryModelManager()

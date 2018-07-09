@@ -29,6 +29,14 @@ class AccountModelManager extends BaseManager {
   getModelInstance (obj) {
     return new Account(Object.assign({}, obj))
   }
+
+  /**
+   * Get list of documents for realtime
+   */
+  listRealtime () {
+    return super.listRealtime()
+      .orderBy('name', 'asc')
+  }
 }
 
 export const AccountManager = new AccountModelManager()

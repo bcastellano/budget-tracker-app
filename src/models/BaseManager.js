@@ -43,13 +43,11 @@ export default class BaseManager {
    * Get list of documents for realtime
    */
   listRealtime () {
-    const list = db
-      .collection(this.collection)
-      .where('userId', '==', auth.currentUser.uid)
-
     this.log('Document list realtime retrieved successfully')
 
-    return list
+    return db
+      .collection(this.collection)
+      .where('userId', '==', auth.currentUser.uid)
   }
 
   /**
