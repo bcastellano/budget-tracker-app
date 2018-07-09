@@ -28,10 +28,6 @@ async function requiredAuth (to, from, next) {
   if (store.getters['auth/user'] == null) {
     await store.dispatch('auth/loadUser') // wait to store user
 
-    // store accounts and categories
-    store.dispatch('accounts/load')
-    store.dispatch('categories/load')
-
     // get user to save or get from collection
     const authUser = store.getters['auth/user']
     if (authUser) {
@@ -39,6 +35,10 @@ async function requiredAuth (to, from, next) {
       if (!user) {
         UserManager.save((new User(authUser)).toObject(), authUser.uid)
       }
+
+      // store accounts and categories
+      store.dispatch('accounts/load')
+      store.dispatch('categories/load')
     }
   }
 
