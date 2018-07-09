@@ -51,7 +51,6 @@
 
 <script>
 import AccountForm from './Form'
-import {AccountManager} from '@/models/Account'
 
 export default {
   name: 'AccountList',
@@ -67,7 +66,7 @@ export default {
   },
   firestore () {
     return {
-      list: AccountManager.listRealtime()
+      list: this.$store.getters['accounts/list']
     }
   },
   methods: {

@@ -57,8 +57,6 @@
 <script>
 import MovementForm from './Form'
 import { MovementManager } from '@/models/Movement'
-import { AccountManager } from '@/models/Account'
-import { CategoryManager } from '@/models/Category'
 import { mapActions } from 'vuex'
 import _ from 'lodash/collection'
 
@@ -85,13 +83,11 @@ export default {
       categories: []
     }
   },
-  async created () {
-    this.accounts = await AccountManager.list()
-    this.categories = await CategoryManager.list()
-  },
   firestore () {
     return {
-      list: MovementManager.listRealtime()
+      list: MovementManager.listRealtime(),
+      accounts: this.$store.getters['accounts/list'],
+      categories: this.$store.getters['categories/list']
     }
   },
   methods: {

@@ -38,7 +38,7 @@
 
 <script>
 import CategoryForm from './Form'
-import { Category, CategoryManager } from '@/models/Category'
+import { Category } from '@/models/Category'
 
 export default {
   name: 'CategoryList',
@@ -54,7 +54,7 @@ export default {
   },
   firestore () {
     return {
-      list: CategoryManager.listRealtime()
+      list: this.$store.getters['categories/list']
     }
   },
   methods: {
