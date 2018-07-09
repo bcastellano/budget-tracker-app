@@ -2,56 +2,73 @@
   <div class="home">
     <h1>Home</h1>
 
-    <v-layout v-if="user && user.balance">
-      <v-flex xs6>
-        <v-flex tag="h3" class="headline">Accounts balance</v-flex>
-        <v-container grid-list-md fluid>
+    <div v-if="user && user.balance">
+      <v-flex>
+        <v-flex tag="h3" class="headline">Accounts global balance</v-flex>
+        <v-container grid-list-xs fluid>
           <v-layout row wrap>
-            <v-flex
+            <account-card
               v-for="(n,k) in user.balance.accounts"
               :key="k"
-              xs4
-            >
-              <v-card flat tile>
-                <v-card-title>{{k}}: <pre>{{n}}</pre></v-card-title>
-              </v-card>
-            </v-flex>
+              :account="getAccount(k)"
+              :stats="n"
+            />
           </v-layout>
         </v-container>
       </v-flex>
-      <v-flex xs6>
-        <v-flex tag="h3" class="headline">Categories balance</v-flex>
+      <v-flex>
+        <v-flex tag="h3" class="headline">Categories global balance</v-flex>
         <v-container grid-list-md fluid>
           <v-layout row wrap>
-            <v-flex
+            <category-card
               v-for="(n,k) in user.balance.categories"
               :key="k"
-              xs4
-            >
-              <v-card flat tile>
-                <v-card-title>{{k}}: <pre>{{n}}</pre></v-card-title>
-              </v-card>
-            </v-flex>
+              :category="getCategory(k)"
+              :stats="n"
+            />
           </v-layout>
         </v-container>
       </v-flex>
-    </v-layout>
+    </div>
   </div>
 </template>
 
 <script>
 import { UserManager } from '@/models/User'
+import AccountCard from '@/components/Home/AccountCard'
+import CategoryCard from '@/components/Home/CategoryCard'
+import _ from 'lodash/collection'
 
 export default {
   name: 'home',
+  components: {
+    AccountCard,
+    CategoryCard
+  },
   data () {
     return {
-      user: null
+      user: null,
+      accounts: [],
+      categories: []
+    }
+  },
+  firestore () {
+    return {
+      accounts: this.$store.getters['accounts/list'],
+      categories: this.$store.getters['categories/list']
     }
   },
   async created () {
     const uid = this.$store.getters['auth/user'].uid
     this.user = await UserManager.get(uid)
+  },
+  methods: {
+    getAccount: function (id) {
+      return _.find(this.accounts, { 'id': id })
+    },
+    getCategory: function (id) {
+      return _.find(this.categories, { 'id': id })
+    }
   }
 }
 </script>
