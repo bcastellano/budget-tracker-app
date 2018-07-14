@@ -26,7 +26,6 @@
                     <v-card-title>
                       <div>
                         <div class="headline">{{ account.name }}</div>
-                        <div>Total money <strong>{{ account.amount }}</strong>€</div>
                       </div>
                     </v-card-title>
                     <v-card-actions>
