@@ -17,6 +17,7 @@
           :headers="headers"
           :items="list"
           :search="search"
+          :rows-per-page-items="[10,25,{'text':'Todos','value':-1}]"
         >
           <template slot="items" slot-scope="props">
             <td>{{ props.item.description }}</td>

@@ -35,6 +35,14 @@ class MovementModelManager extends BaseManager {
   }
 
   /**
+   * Get list of documents for realtime
+   */
+  listRealtime () {
+    return super.listRealtime()
+      .orderBy('createdAt', 'desc')
+  }
+
+  /**
    * Remove item
    */
   remove (id) {
