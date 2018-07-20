@@ -4,7 +4,13 @@
 
     <div v-if="user && user.balance">
       <v-flex>
-        <v-flex tag="h3" class="headline">Accounts global balance</v-flex>
+        <v-flex tag="h3" class="headline">
+          Accounts global balance:
+          <v-chip :color="(totalAccounts < 0 ? 'red' : 'green')" text-color="white">
+            <v-avatar><v-icon>euro_symbol</v-icon></v-avatar>
+            <strong><u>{{ totalAccounts.toFixed(2) }}</u></strong>
+          </v-chip>
+        </v-flex>
         <v-container grid-list-xs fluid>
           <v-layout row wrap>
             <account-card
@@ -38,6 +44,8 @@ import { UserManager } from '@/models/User'
 import AccountCard from '@/components/Home/AccountCard'
 import CategoryCard from '@/components/Home/CategoryCard'
 import _ from 'lodash/collection'
+import _math from 'lodash/math'
+import _lang from 'lodash/lang'
 
 export default {
   name: 'home',
@@ -49,7 +57,8 @@ export default {
     return {
       user: null,
       accounts: [],
-      categories: []
+      categories: [],
+      totalAccounts: 0
     }
   },
   firestore () {
@@ -61,6 +70,7 @@ export default {
   async created () {
     const uid = this.$store.getters['auth/user'].uid
     this.user = await UserManager.get(uid)
+    this.totalAccounts = _math.sumBy(_lang.toArray(this.user.balance.accounts), (o) => o.value)
   },
   methods: {
     getAccount: function (id) {
