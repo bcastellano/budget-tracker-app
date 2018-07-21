@@ -3,6 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser')
+const apiAuth = require('./middlewares/auth')
 const routes = require('./routes')
 
 const app = express();
@@ -11,7 +12,7 @@ const app = express();
 app.use(cors({ origin: true }));
 
 // Add middleware to authenticate requests
-//app.use(myMiddleware);
+app.use(apiAuth.firebaseAuth);
 
 // parse application/json
 app.use(bodyParser.json());
