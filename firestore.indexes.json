@@ -20,6 +20,13 @@
         { "fieldPath": "userId", "mode": "ASCENDING" },
         { "fieldPath": "createdAt", "mode": "DESCENDING" }
       ]
+    },
+    {
+      "collectionId": "movements",
+      "fields": [
+        { "fieldPath": "userId", "mode": "ASCENDING" },
+        { "fieldPath": "date", "mode": "ASCENDING" }
+      ]
     }
   ]
 }
