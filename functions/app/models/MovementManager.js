@@ -25,7 +25,8 @@ exports.MovementManager = {
           ntrans: 0,
           accounts: {},
           categories: {},
-          tags: {}
+          tags: {},
+          movements: []
         }
 
         querySnapshot.forEach((doc) => {
@@ -40,9 +41,16 @@ exports.MovementManager = {
               response.tags[key] = amount + (response.tags[key] || 0)
             }
           }
+          response.movements.push({
+            accountId: move.accountId,
+            categoryId: move.categoryId,
+            tags: move.tags,
+            amount: move.amount,
+            type: move.type,
+            date: move.date,
+            description: move.description
+          })
         })
-
-        console.log(response)
 
         return response
       })

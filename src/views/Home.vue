@@ -65,7 +65,7 @@
           <v-layout row wrap>
             <div class="text-xs-left">
               <h4>Accounts:</h4>
-              <v-chip v-for="(amount,k) in userBalance.accounts" :key="k" :color="(amount < 0 ? 'red' : 'green')">
+              <v-chip @click="showMovements('accountId', k)" v-for="(amount,k) in userBalance.accounts" :key="k" :color="(amount < 0 ? 'red' : 'green')">
                 <v-avatar><img :src="getAccount(k).image" alt="trevor"></v-avatar>
                 {{ getAccount(k).name }}: {{ amount.toFixed(2) }}
               </v-chip>
@@ -73,7 +73,7 @@
 
             <div class="text-xs-left">
               <h4>Categories:</h4>
-              <v-chip v-for="(amount,k) in userBalance.categories" :key="k" outline :color="(amount < 0 ? 'red' : 'green')">
+              <v-chip @click="showMovements('categoryId', k)" v-for="(amount,k) in userBalance.categories" :key="k" outline :color="(amount < 0 ? 'red' : 'green')">
                 <v-avatar><v-icon :style="{ 'color': getCategory(k).color }">{{ getCategory(k).icon }}</v-icon></v-avatar>
                 {{ getCategory(k).name }}: {{ amount.toFixed(2) }}
               </v-chip>
@@ -81,7 +81,7 @@
 
             <div class="text-xs-left">
               <h4>Tags:</h4>
-              <v-chip v-for="(amount,k) in userBalance.tags" :key="k" outline :color="(amount < 0 ? 'red' : 'green')">
+              <v-chip @click="showMovements('tags.'+k, true)" v-for="(amount,k) in userBalance.tags" :key="k" outline :color="(amount < 0 ? 'red' : 'green')">
                 {{ k }}: {{ amount.toFixed(2) }}
               </v-chip>
             </div>
@@ -103,6 +103,37 @@
         </v-container>
       </v-flex>
     </div>
+
+    <v-dialog v-model="movementsDialog">
+      <v-card>
+        <v-card-title class="headline">Movements</v-card-title>
+
+        <v-card-text>
+          <v-data-table
+            :headers="headers"
+            :items="itemsFiltered"
+            hide-actions
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{ props.index +1 }}</td>
+              <td>{{ props.item.description }}</td>
+              <td :class="props.item.type === 'expense' ? 'red--text' : 'green--text'">{{ props.item.type === 'expense' ? '-' : '' }}{{ props.item.amount }}</td>
+              <td>{{ getCategory(props.item.categoryId).name }}</td>
+              <td>{{ getAccount(props.item.accountId).name }}</td>
+              <td>{{ props.item.date }}</td>
+            </template>
+            <v-alert slot="no-results" :value="true" color="error" icon="warning">
+              no results found
+            </v-alert>
+          </v-data-table>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat="flat" @click="movementsDialog = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -136,7 +167,17 @@ export default {
       dateStart: dStart,
       menuStart: false,
       dateEnd: dEnd,
-      menuEnd: false
+      menuEnd: false,
+      headers: [
+        { text: 'index', sortable: false },
+        { text: 'Description', sortable: false, value: 'description' },
+        { text: 'Amount (€)', value: 'amount' },
+        { text: 'Category', value: 'categoryId' },
+        { text: 'Account', value: 'accountId' },
+        { text: 'Date', value: 'date' }
+      ],
+      movementsDialog: false,
+      itemsFiltered: []
     }
   },
   firestore () {
@@ -160,6 +201,10 @@ export default {
     },
     loadUserBalance: async function () {
       this.userBalance = await apiClient.getStatsBalance(this.dateStart, this.dateEnd)
+    },
+    showMovements: function (field, value) {
+      this.itemsFiltered = _.filter(this.userBalance.movements, [field, value])
+      this.movementsDialog = true
     }
   }
 }
