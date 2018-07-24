@@ -28,8 +28,8 @@
             </div>
 
             <v-text-field
-              v-model="account.name"
-              :rules="nameRules"
+              v-model.trim="account.name"
+              :rules="rules.name"
               :counter="30"
               label="Name"
               prepend-icon="description"
@@ -38,7 +38,7 @@
 
             <v-text-field
               v-model="account.initialBalance"
-              :rules="initialBalanceRules"
+              :rules="rules.initialBalance"
               label="Initial balance"
               prepend-icon="euro_symbol"
               required
@@ -48,8 +48,10 @@
               :items="backgroundColors"
               item-value="hex"
               v-model="account.color"
+              :rules="rules.color"
               label="Select color"
               prepend-icon="border_color"
+              required
             >
               <template slot="selection" slot-scope="data">
                 <v-list-tile-title
@@ -86,14 +88,19 @@ export default {
   data () {
     return {
       valid: false,
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 30) || 'Name must be less than 30 characters'
-      ],
-      initialBalanceRules: [
-        v => !!v || 'Initial balance is required',
-        v => /[0-9]|\./.test(v) || 'Initial balance must be valid number'
-      ],
+      rules: {
+        name: [
+          v => !!v || 'Name is required',
+          v => (v && v.length <= 30) || 'Name must be less than 30 characters'
+        ],
+        initialBalance: [
+          v => !!v || 'Initial balance is required',
+          v => /[0-9]|\./.test(v) || 'Initial balance must be valid number'
+        ],
+        color: [
+          v => !!v || 'Color is required'
+        ]
+      },
       backgroundColors: [],
       imageFile: null
     }

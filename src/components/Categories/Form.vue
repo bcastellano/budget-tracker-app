@@ -23,8 +23,8 @@
             ></v-text-field>
 
             <v-text-field
-              v-model="category.name"
-              :rules="nameRules"
+              v-model.trim="category.name"
+              :rules="rules.name"
               :counter="30"
               label="Name"
               prepend-icon="description"
@@ -35,6 +35,7 @@
               <v-flex xs3>
                 <v-text-field
                   v-model="category.icon"
+                  :rules="rules.icon"
                   label="Icon"
                   prepend-icon="insert_photo"
                   required
@@ -70,8 +71,10 @@
               :items="backgroundColors"
               item-value="hex"
               v-model="category.color"
+              :rules="rules.color"
               label="Select color"
               prepend-icon="border_color"
+              required
             >
               <template slot="selection" slot-scope="data">
                 <v-list-tile-title
@@ -118,10 +121,18 @@ export default {
   data () {
     return {
       valid: false,
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 30) || 'Name must be less than 30 characters'
-      ],
+      rules: {
+        name: [
+          v => !!v || 'Name is required',
+          v => (v && v.length <= 30) || 'Name must be less than 30 characters'
+        ],
+        icon: [
+          v => !!v || 'Icon is required'
+        ],
+        color: [
+          v => !!v || 'Color is required'
+        ],
+      },
       backgroundColors: [],
       icons: [
         'account_balance', 'account_balance_wallet', 'android', 'assessment', 'book', 'build', 'card_giftcard', 'card_travel', 'commute', 'dns', 'flight_takeoff', 'home', 'pets', 'shop', 'shopping_cart'

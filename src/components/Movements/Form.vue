@@ -23,9 +23,9 @@
             ></v-text-field>
 
             <v-text-field
-              v-model="movement.description"
-              :rules="descriptionRules"
-              :counter="30"
+              v-model.trim="movement.description"
+              :rules="rules.description"
+              :counter="50"
               label="Description"
               prepend-icon="description"
               required
@@ -33,15 +33,18 @@
 
             <v-radio-group
               v-model="movement.type"
+              :rules="rules.type"
               row
               prepend-icon="ballot"
+              required
             >
               <v-radio color="red" label="Expense" value="expense"></v-radio>
               <v-radio color="green" label="Income" value="income"></v-radio>
             </v-radio-group>
 
             <v-text-field
-              v-model="movement.amount"
+              v-model.number="movement.amount"
+              :rules="rules.amount"
               label="Amount"
               prepend-icon="euro_symbol"
               required
@@ -62,9 +65,11 @@
                 <v-text-field
                   slot="activator"
                   v-model="movement.date"
+                  :rules="rules.date"
                   label="Select date"
                   prepend-icon="event"
                   readonly
+                  required
                 ></v-text-field>
                 <v-date-picker v-model="movement.date" no-title scrollable>
                   <v-spacer></v-spacer>
@@ -79,8 +84,10 @@
               item-value="id"
               item-text="name"
               v-model="movement.accountId"
+              :rules="rules.account"
               label="Select account"
               prepend-icon="account_balance"
+              required
             ></v-select>
 
             <v-select
@@ -88,8 +95,10 @@
               item-value="id"
               item-text="name"
               v-model="movement.categoryId"
+              :rules="rules.category"
               label="Select category"
               prepend-icon="label"
+              required
             ></v-select>
 
             <v-select
@@ -114,6 +123,10 @@ import { Category } from '@/models/Category'
 import { mapActions } from 'vuex'
 import _ from 'lodash/collection'
 
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 export default {
   name: 'MovementForm',
   props: {
@@ -126,10 +139,29 @@ export default {
     return {
       valid: false,
       menuDate: false,
-      descriptionRules: [
-        v => !!v || 'Description is required',
-        v => (v && v.length <= 30) || 'Description must be less than 30 characters'
-      ]
+      rules: {
+        description: [
+          v => !!v || 'Description is required',
+          v => (v && v.length <= 50) || 'Description must be less than 30 characters'
+        ],
+        amount: [
+          v => !!v || 'Amount is required',
+          v => (v && isNumber(v)) || 'Amount must be a valid number'
+        ],
+        type: [
+          v => !!v || 'Type is required'
+        ],
+        date: [
+          v => !!v || 'Date is required',
+          v => !!Date.parse(v) || 'Date must be a valid date format YYYY-MM-DD'
+        ],
+        account: [
+          v => !!v || 'Select an account'
+        ],
+        category: [
+          v => !!v || 'Select an category'
+        ]
+      }
     }
   },
   computed: {
