@@ -46,10 +46,13 @@
 
       <MovementForm
         :opened="formOpened"
+        :initialStep="initialStep"
+        :edit="edit"
         :movement="movementData"
         :accounts="accounts"
         :categories="categories"
         v-on:form-closed="closeForm($event)"
+        v-on:form-empty="emptyForm($event)"
       ></MovementForm>
     </v-flex>
   </v-layout>
@@ -69,6 +72,8 @@ export default {
   data () {
     return {
       formOpened: false,
+      edit: false,
+      initialStep: 1,
       movementData: {},
       list: [],
       search: '',
@@ -94,11 +99,17 @@ export default {
   methods: {
     openForm: function (movement) {
       this.movementData = Object.assign(movement ? {id: movement.id} : {}, movement)
+      this.edit = !!movement
       this.formOpened = true
+      this.initialStep = 1
     },
     closeForm: function (event) {
       this.movementData = {}
       this.formOpened = false
+    },
+    emptyForm: function (event) {
+      this.movementData = {}
+      this.initialStep = 1
     },
     deleteItem: function (movement) {
       this.$root.$confirm('Delete', 'Are you sure?', { color: 'red' })

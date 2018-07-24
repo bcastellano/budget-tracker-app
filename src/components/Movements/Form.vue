@@ -8,12 +8,130 @@
           </v-btn>
           <v-toolbar-title>Movement</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn dark flat @click.native="save">Save</v-btn>
+          <v-toolbar-items v-if="edit === true">
+            <v-btn dark flat @click.native="save('close')">Save</v-btn>
+          </v-toolbar-items>
+          <v-toolbar-items v-if="edit === false">
+            <v-btn dark flat @click.native="save('close')">Save and close</v-btn>
+            <v-btn dark flat @click.native="save('new')">Save and add</v-btn>
           </v-toolbar-items>
         </v-toolbar>
         <v-card-text>
-          <v-form ref="form" v-model="valid">
+          <v-form v-if="edit === false" ref="form" v-model="valid">
+            <v-stepper v-model="step">
+              <v-stepper-header>
+                <v-stepper-step :complete="step > 1" step="1" editable>Name</v-stepper-step><v-divider></v-divider>
+                <v-stepper-step :complete="step > 2" step="2" editable>Amount</v-stepper-step><v-divider></v-divider>
+                <v-stepper-step :complete="step > 3" step="3" editable>Date</v-stepper-step><v-divider></v-divider>
+                <v-stepper-step :complete="step > 4" step="4" editable>Account</v-stepper-step><v-divider></v-divider>
+                <v-stepper-step step="5" editable>Category</v-stepper-step>
+              </v-stepper-header>
+
+              <v-stepper-items>
+                <v-stepper-content step="1">
+                  <v-card class="pa-2 mb-2" color="grey lighten-2" flat>
+                    <v-text-field
+                      v-model.trim="movement.description"
+                      :rules="rules.description"
+                      :counter="50"
+                      label="Description"
+                      prepend-icon="description"
+                      required
+                    ></v-text-field>
+                  </v-card>
+
+                  <v-btn color="primary" @click="step++">Continue</v-btn>
+                </v-stepper-content>
+
+                <v-stepper-content step="2">
+                  <v-card class="pa-2 mb-2" color="grey lighten-2" flat>
+                    <v-radio-group
+                      v-model="movement.type"
+                      :rules="rules.type"
+                      row
+                      prepend-icon="ballot"
+                      required
+                    >
+                      <v-radio color="red" label="Expense" value="expense"></v-radio>
+                      <v-radio color="green" label="Income" value="income"></v-radio>
+                    </v-radio-group>
+
+                    <v-text-field
+                      v-model.number="movement.amount"
+                      :rules="rules.amount"
+                      label="Amount"
+                      prepend-icon="euro_symbol"
+                      required
+                    ></v-text-field>
+                  </v-card>
+
+                  <v-btn color="primary" @click="step++">Continue</v-btn>
+                  <v-btn flat @click="step--">Back</v-btn>
+                </v-stepper-content>
+
+                <v-stepper-content step="3">
+                  <v-card class="pa-2 mb-2" color="grey lighten-2" flat>
+                    <v-date-picker
+                      v-model="movement.date"
+                      :rules="rules.date"
+                      landscape
+                    ></v-date-picker>
+                  </v-card>
+
+                  <v-btn color="primary" @click="step++">Continue</v-btn>
+                  <v-btn flat @click="step--">Back</v-btn>
+                </v-stepper-content>
+
+                <v-stepper-content step="4">
+                  <v-card class="pa-2 mb-2" color="grey lighten-2" flat>
+                    <v-select
+                      :items="accounts"
+                      item-value="id"
+                      item-text="name"
+                      v-model="movement.accountId"
+                      :rules="rules.account"
+                      label="Select account"
+                      prepend-icon="account_balance"
+                      required
+                    ></v-select>
+                  </v-card>
+
+                  <v-btn color="primary" @click="step++">Continue</v-btn>
+                  <v-btn flat @click="step--">Back</v-btn>
+                </v-stepper-content>
+
+                <v-stepper-content step="5">
+                  <v-card class="pa-2 mb-2" color="grey lighten-2" flat>
+                    <v-select
+                      :items="categories"
+                      item-value="id"
+                      item-text="name"
+                      v-model="movement.categoryId"
+                      :rules="rules.category"
+                      label="Select category"
+                      prepend-icon="label"
+                      required
+                    ></v-select>
+
+                    <v-select
+                      :items="tagItems"
+                      v-model="tags"
+                      label="Select tags"
+                      chips
+                      multiple
+                      prepend-icon="local_offer"
+                    ></v-select>
+                  </v-card>
+
+                  <v-btn color="primary" @click="save('close')">Save</v-btn>
+                  <v-btn color="primary" @click="save('new')">Save and new</v-btn>
+                  <v-btn flat @click="step--">Back</v-btn>
+                </v-stepper-content>
+              </v-stepper-items>
+            </v-stepper>
+          </v-form>
+
+          <v-form v-if="edit === true" ref="form" v-model="valid">
             <v-text-field
               v-if="movement.id"
               v-model="movement.id"
@@ -131,12 +249,15 @@ export default {
   name: 'MovementForm',
   props: {
     opened: Boolean,
+    edit: Boolean,
+    initialStep: Number,
     movement: Object,
     accounts: Array,
     categories: Array
   },
   data () {
     return {
+      step: this.initialStep,
       valid: false,
       menuDate: false,
       rules: {
@@ -184,8 +305,13 @@ export default {
   methods: {
     close: function () {
       this.$emit('form-closed', false)
+      this.step = 1
     },
-    save: async function () {
+    empty: function () {
+      this.$emit('form-empty', false)
+      this.step = 1
+    },
+    save: async function (action) {
       if (this.$refs.form.validate()) {
         this.removeInvalidTags()
 
@@ -193,7 +319,12 @@ export default {
           .save(MovementManager.getModelInstance(this.movement).toObject(), this.movement.id)
           .then(() => {
             this.addMessage({text: `Movement "${this.movement.description}" saved`, type: 'success'})
-            this.close()
+
+            if (action === 'close') {
+              this.close()
+            } else {
+              this.empty()
+            }
           })
       }
     },
