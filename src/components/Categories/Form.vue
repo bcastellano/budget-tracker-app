@@ -131,7 +131,7 @@ export default {
         ],
         color: [
           v => !!v || 'Color is required'
-        ],
+        ]
       },
       backgroundColors: [],
       icons: [

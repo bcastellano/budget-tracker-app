@@ -123,8 +123,8 @@ import { Category } from '@/models/Category'
 import { mapActions } from 'vuex'
 import _ from 'lodash/collection'
 
-function isNumber(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
+function isNumber (n) {
+  return !isNaN(parseFloat(n)) && isFinite(n)
 }
 
 export default {
