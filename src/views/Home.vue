@@ -26,7 +26,7 @@
       <v-flex>
         <v-flex tag="h3" class="headline">
           User balance in dates
-          <v-chip v-if="userBalance" :color="(userBalance.total < 0 ? 'red' : 'green')" text-color="white">
+          <v-chip @click="showMovements()" v-if="userBalance" :color="(userBalance.total < 0 ? 'red' : 'green')" text-color="white">
             <v-avatar><v-icon>euro_symbol</v-icon></v-avatar>
             <strong><u>{{ userBalance.total.toFixed(2) }}</u></strong>
           </v-chip>
@@ -203,7 +203,10 @@ export default {
       this.userBalance = await apiClient.getStatsBalance(this.dateStart, this.dateEnd)
     },
     showMovements: function (field, value) {
-      this.itemsFiltered = _.filter(this.userBalance.movements, [field, value])
+      this.itemsFiltered = this.userBalance.movements
+      if (field && value) {
+        this.itemsFiltered = _.filter(this.userBalance.movements, [field, value])
+      }
       this.movementsDialog = true
     }
   }
