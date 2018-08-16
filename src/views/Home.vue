@@ -104,7 +104,7 @@
       </v-flex>
     </div>
 
-    <v-dialog v-model="movementsDialog">
+    <v-dialog v-model="movementsDialog" persistent>
       <v-card>
         <v-card-title class="headline">Movements</v-card-title>
 
@@ -113,8 +113,18 @@
             :headers="headers"
             :items="itemsFiltered"
             hide-actions
+            v-model="selected"
+            select-all
+            item-key="id"
           >
             <template slot="items" slot-scope="props">
+              <td>
+                <v-checkbox
+                  v-model="props.selected"
+                  primary
+                  hide-details
+                ></v-checkbox>
+              </td>
               <td>{{ props.index +1 }}</td>
               <td>{{ props.item.description }}</td>
               <td :class="props.item.type === 'expense' ? 'red--text' : 'green--text'">{{ props.item.type === 'expense' ? '-' : '' }}{{ props.item.amount }}</td>
@@ -126,11 +136,17 @@
               no results found
             </v-alert>
           </v-data-table>
+
+          There are {{ selected.length }} items selected with a total of
+          <v-chip :color="(sum(selected) < 0 ? 'red' : 'green')" text-color="white">
+            <v-avatar><v-icon>euro_symbol</v-icon></v-avatar>
+            <strong><u>{{ sum(selected).toFixed(2) }}</u></strong>
+          </v-chip>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat="flat" @click="movementsDialog = false">Close</v-btn>
+          <v-btn flat="flat" @click="movementsDialog = false; selected = []">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -177,7 +193,8 @@ export default {
         { text: 'Date', value: 'date' }
       ],
       movementsDialog: false,
-      itemsFiltered: []
+      itemsFiltered: [],
+      selected: []
     }
   },
   firestore () {
@@ -208,7 +225,39 @@ export default {
         this.itemsFiltered = _.filter(this.userBalance.movements, [field, value])
       }
       this.movementsDialog = true
+    },
+    sum: function (items) {
+      return _math.sumBy(items, (o) => o.amount * (o.type === 'expense' ? -1 : 1))
     }
   }
 }
 </script>
+
+<style>
+table th, table td, table tr, table thead, table tbody {
+  display: block;
+}
+
+table tr {
+    clear: both;
+}
+
+table tbody {
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+table tbody td,table thead th {
+    width: 10%;
+    float: left;
+}
+
+table tbody td:first-child, table thead th:first-child {
+    padding: 10px 0 0 0;
+}
+
+table tbody td:not(:first-child), table thead th:not(:first-child) {
+    padding: 15px 0 0 0;
+}
+</style>

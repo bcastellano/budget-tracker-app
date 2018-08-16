@@ -42,6 +42,7 @@ exports.MovementManager = {
             }
           }
           response.movements.push({
+            id: doc.id,
             accountId: move.accountId,
             categoryId: move.categoryId,
             tags: move.tags,
