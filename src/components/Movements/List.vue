@@ -18,6 +18,7 @@
           :items="list"
           :search="search"
           :rows-per-page-items="[10,25,{'text':'Todos','value':-1}]"
+          :pagination.sync="pagination"
         >
           <template slot="items" slot-scope="props">
             <td>{{ props.item.description }}</td>
@@ -85,6 +86,10 @@ export default {
         { text: 'Date', value: 'date' },
         { text: 'actions' }
       ],
+      pagination: {
+        sortBy: 'date',
+        descending: true
+      },
       accounts: [],
       categories: []
     }

@@ -117,6 +117,7 @@
             select-all
             item-key="id"
             class="itemsFiltered"
+            :pagination.sync="pagination"
           >
             <template slot="items" slot-scope="props">
               <td>
@@ -193,6 +194,11 @@ export default {
         { text: 'Account', value: 'accountId' },
         { text: 'Date', value: 'date' }
       ],
+      pagination: {
+        sortBy: 'date',
+        descending: true,
+        rowsPerPage: -1
+      },
       movementsDialog: false,
       itemsFiltered: [],
       selected: []
