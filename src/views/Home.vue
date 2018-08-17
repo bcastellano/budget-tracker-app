@@ -116,6 +116,7 @@
             v-model="selected"
             select-all
             item-key="id"
+            class="itemsFiltered"
           >
             <template slot="items" slot-scope="props">
               <td>
@@ -234,30 +235,37 @@ export default {
 </script>
 
 <style>
-table th, table td, table tr, table thead, table tbody {
+.itemsFiltered table th,
+.itemsFiltered table td,
+.itemsFiltered table tr,
+.itemsFiltered table thead,
+.itemsFiltered table tbody {
   display: block;
 }
 
-table tr {
+.itemsFiltered table tr {
     clear: both;
 }
 
-table tbody {
+.itemsFiltered table tbody {
     height: 300px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-table tbody td,table thead th {
+.itemsFiltered table tbody td,
+.itemsFiltered table thead th {
     width: 10%;
     float: left;
 }
 
-table tbody td:first-child, table thead th:first-child {
+.itemsFiltered table tbody td:first-child,
+.itemsFiltered table thead th:first-child {
     padding: 10px 0 0 0;
 }
 
-table tbody td:not(:first-child), table thead th:not(:first-child) {
+.itemsFiltered table tbody td:not(:first-child),
+.itemsFiltered table thead th:not(:first-child) {
     padding: 15px 0 0 0;
 }
 </style>
