@@ -15,7 +15,7 @@
         </v-card-title>
         <v-data-table
           :headers="headers"
-          :items="list"
+          :items="listFiltered"
           :search="search"
           :rows-per-page-items="[10,25,{'text':'Todos','value':-1}]"
           :pagination.sync="pagination"
@@ -23,8 +23,8 @@
           <template slot="items" slot-scope="props">
             <td>{{ props.item.description }}</td>
             <td :class="props.item.type === 'expense' ? 'red--text' : 'green--text'">{{ props.item.type === 'expense' ? '-' : '' }}{{ props.item.amount }}</td>
-            <td>{{ getCategoryName(props.item.categoryId) }}</td>
-            <td>{{ getAccountName(props.item.accountId) }}</td>
+            <td>{{ props.item.categoryName }}</td>
+            <td>{{ props.item.accountName }}</td>
             <td>{{ props.item.date }}</td>
             <td>
               <v-btn icon class="mx-0" @click="openForm(props.item)">
@@ -81,8 +81,8 @@ export default {
       headers: [
         { text: 'Description', sortable: false, value: 'description' },
         { text: 'Amount (€)', value: 'amount' },
-        { text: 'Category', value: 'categoryId' },
-        { text: 'Account', value: 'accountId' },
+        { text: 'Category', value: 'categoryName' },
+        { text: 'Account', value: 'accountName' },
         { text: 'Date', value: 'date' },
         { text: 'actions' }
       ],
@@ -92,6 +92,16 @@ export default {
       },
       accounts: [],
       categories: []
+    }
+  },
+  computed: {
+    listFiltered () {
+      _.forEach(this.list, (item) => {
+        item.accountName = this.getAccountName(item.accountId)
+        item.categoryName = this.getCategoryName(item.categoryId)
+      })
+
+      return this.list
     }
   },
   firestore () {
