@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     openForm: function (movement) {
-      this.movementData = Object.assign(movement ? {id: movement.id} : {}, movement)
+      this.movementData = Object.assign(movement ? { id: movement.id } : {}, movement)
       this.edit = !!movement
       this.formOpened = true
       this.initialStep = 1
@@ -121,7 +121,7 @@ export default {
         .then((confirm) => {
           if (confirm) {
             MovementManager.remove(movement.id)
-            this.addMessage({text: `Movement "${movement.description}" deleted`, type: 'success'})
+            this.addMessage({ text: `Movement "${movement.description}" deleted`, type: 'success' })
           }
         })
     },

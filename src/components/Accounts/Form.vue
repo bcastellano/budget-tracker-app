@@ -128,7 +128,7 @@ export default {
         AccountManager
           .save(AccountManager.getModelInstance(this.account).toObject(), this.account.id)
           .then(() => {
-            this.addMessage({text: `Account "${this.account.name}" saved`, type: 'success'})
+            this.addMessage({ text: `Account "${this.account.name}" saved`, type: 'success' })
             this.close()
           })
       }
@@ -145,7 +145,7 @@ export default {
     // set background colors
     for (const colorGroup in colors) {
       for (const colorKey in colors[colorGroup]) {
-        this.backgroundColors.push({hex: colors[colorGroup][colorKey], name: colorKey})
+        this.backgroundColors.push({ hex: colors[colorGroup][colorKey], name: colorKey })
       }
     }
   }

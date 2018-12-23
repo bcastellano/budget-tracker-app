@@ -318,7 +318,7 @@ export default {
         MovementManager
           .save(MovementManager.getModelInstance(this.movement).toObject(), this.movement.id)
           .then(() => {
-            this.addMessage({text: `Movement "${this.movement.description}" saved`, type: 'success'})
+            this.addMessage({ text: `Movement "${this.movement.description}" saved`, type: 'success' })
 
             if (action === 'close') {
               this.close()

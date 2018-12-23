@@ -8,7 +8,7 @@ const actions = {
   setUser ({ commit }, user) {
     commit('SET_USER', user)
   },
-  async loadUser ({commit}) {
+  async loadUser ({ commit }) {
     const user = await getCurrentFirebaseUser()
     if (user) {
       commit('SET_USER', user)

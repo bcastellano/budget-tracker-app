@@ -160,7 +160,7 @@ export default {
         CategoryManager
           .save(CategoryManager.getModelInstance(this.category).toObject(), this.category.id)
           .then(() => {
-            this.addMessage({text: `Category "${this.category.name}" saved`, type: 'success'})
+            this.addMessage({ text: `Category "${this.category.name}" saved`, type: 'success' })
             this.close()
           })
       }
@@ -173,7 +173,7 @@ export default {
   created: function () {
     // set background colors
     for (const colorGroup in colors) {
-      this.backgroundColors.push({hex: colors[colorGroup]['base'], name: colorGroup})
+      this.backgroundColors.push({ hex: colors[colorGroup]['base'], name: colorGroup })
     }
   }
 }

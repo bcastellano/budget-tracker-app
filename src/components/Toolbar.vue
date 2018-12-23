@@ -37,7 +37,7 @@ export default {
     logOut () {
       firebase.auth().signOut()
       this.$store.dispatch('auth/setUser', null)
-      this.$router.push({name: 'auth'})
+      this.$router.push({ name: 'auth' })
     }
   }
 }

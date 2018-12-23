@@ -28,16 +28,16 @@
 
 <script>
 const menuItems = [
-  {title: 'Dashboard', icon: 'dashboard', to: {name: 'home'}},
-  {divider: true},
-  {title: 'Accounts', icon: 'account_balance', to: {name: 'accounts'}},
-  {title: 'Categories', icon: 'label', to: {name: 'categories'}},
-  {title: 'Movements', icon: 'swap_horiz', to: {name: 'movements'}},
-  {divider: true},
-  {title: 'Settings', icon: 'settings', to: {name: 'settings'}},
-  {title: 'About', icon: 'info', to: {name: 'about'}},
-  {title: 'Help', icon: 'help', to: {name: 'help'}},
-  {divider: true}
+  { title: 'Dashboard', icon: 'dashboard', to: { name: 'home' } },
+  { divider: true },
+  { title: 'Accounts', icon: 'account_balance', to: { name: 'accounts' } },
+  { title: 'Categories', icon: 'label', to: { name: 'categories' } },
+  { title: 'Movements', icon: 'swap_horiz', to: { name: 'movements' } },
+  { divider: true },
+  { title: 'Settings', icon: 'settings', to: { name: 'settings' } },
+  { title: 'About', icon: 'info', to: { name: 'about' } },
+  { title: 'Help', icon: 'help', to: { name: 'help' } },
+  { divider: true }
 ]
 
 export default {

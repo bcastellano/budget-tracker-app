@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     openForm: function (category) {
-      this.categoryData = Object.assign(category ? {id: category.id} : {}, category)
+      this.categoryData = Object.assign(category ? { id: category.id } : {}, category)
       this.formOpened = true
     },
     closeForm: function (event) {

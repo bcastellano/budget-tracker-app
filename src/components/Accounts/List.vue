@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     openForm: function (account) {
-      this.accountData = Object.assign(account ? {id: account.id} : {}, account)
+      this.accountData = Object.assign(account ? { id: account.id } : {}, account)
       this.formOpened = true
     },
     closeForm: function (event) {

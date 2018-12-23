@@ -48,7 +48,7 @@ async function requiredAuth (to, from, next) {
   ) {
     // Cancel this routing and replace with unlogged entry point. Remember url to go when logged
     next(false)
-    router.replace({name: 'auth', query: {to: to.path}})
+    router.replace({ name: 'auth', query: { to: to.path } })
     return
   }
 
@@ -58,7 +58,7 @@ async function requiredAuth (to, from, next) {
   ) {
     // Cancel this routing and replace with unlogged entry point
     next(false)
-    router.replace({name: 'home'})
+    router.replace({ name: 'home' })
     return
   }
 
