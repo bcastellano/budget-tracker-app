@@ -114,7 +114,8 @@ export default {
   },
   methods: {
     openForm: function (movement) {
-      this.movementData = Object.assign(movement ? { id: movement.id } : {}, movement)
+      const defaultMovement = { type: 'expense' }
+      this.movementData = Object.assign(movement ? { id: movement.id } : defaultMovement, movement)
       this.edit = !!movement
       this.formOpened = true
       this.initialStep = 1
