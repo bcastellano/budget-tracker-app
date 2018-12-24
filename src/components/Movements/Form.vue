@@ -125,6 +125,7 @@
 
                   <v-btn color="primary" @click="save('close')">Save</v-btn>
                   <v-btn color="primary" @click="save('new')">Save and new</v-btn>
+                  <v-btn color="primary" @click="save('copy')">Save and copy</v-btn>
                   <v-btn flat @click="step--">Back</v-btn>
                 </v-stepper-content>
               </v-stepper-items>
@@ -304,12 +305,7 @@ export default {
   },
   methods: {
     close: function () {
-      this.$emit('form-closed', false)
-      this.step = 1
-    },
-    empty: function () {
-      this.$emit('form-empty', false)
-      this.step = 1
+      this.nextMovementAction('close')
     },
     save: async function (action) {
       if (this.$refs.form.validate()) {
@@ -319,12 +315,7 @@ export default {
           .save(MovementManager.getModelInstance(this.movement).toObject(), this.movement.id)
           .then(() => {
             this.addMessage({ text: `Movement "${this.movement.description}" saved`, type: 'success' })
-
-            if (action === 'close') {
-              this.close()
-            } else {
-              this.empty()
-            }
+            this.nextMovementAction(action)
           })
       }
     },
@@ -336,6 +327,24 @@ export default {
           delete this.movement.tags[tag]
         }
       }
+    },
+    nextMovementAction (action) {
+      const ACTIONS = {
+        'close': () => {
+          this.$emit('form-closed', false)
+          this.step = 1
+        },
+        'new': () => {
+          this.$emit('form-empty', false)
+          this.step = 1
+        },
+        'copy': () => {
+          this.$emit('form-copy', this.movement)
+          this.step = 1
+        }
+      }
+
+      return ACTIONS[action]()
     }
   }
 }

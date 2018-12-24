@@ -54,6 +54,7 @@
         :categories="categories"
         v-on:form-closed="closeForm($event)"
         v-on:form-empty="emptyForm($event)"
+        v-on:form-copy="copyForm($event)"
       ></MovementForm>
     </v-flex>
   </v-layout>
@@ -124,6 +125,10 @@ export default {
     },
     emptyForm: function (event) {
       this.movementData = {}
+      this.initialStep = 1
+    },
+    copyForm: function (event) {
+      this.movementData = Object.assign({}, event)
       this.initialStep = 1
     },
     deleteItem: function (movement) {
