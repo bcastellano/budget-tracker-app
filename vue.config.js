@@ -19,5 +19,10 @@ module.exports = {
         args[0].version = require('./package.json').version
         return args
       })
+  },
+
+  devServer: {
+    // To solve WDS error connection in hmr plugin https://webpack.js.org/configuration/dev-server/#devserver-disablehostcheck
+    disableHostCheck: true
   }
 }
