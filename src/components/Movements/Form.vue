@@ -83,17 +83,26 @@
                 </v-stepper-content>
 
                 <v-stepper-content step="4">
-                  <v-card class="pa-2 mb-2" color="grey lighten-2" flat>
-                    <v-select
-                      :items="accounts"
-                      item-value="id"
-                      item-text="name"
+                  <v-card class="pa-2 mb-2" flat>
+                    <v-radio-group
                       v-model="movement.accountId"
                       :rules="rules.account"
                       label="Select account"
                       prepend-icon="account_balance"
                       required
-                    ></v-select>
+                    >
+                      <v-radio
+                        v-for="acc in accounts"
+                        :key="acc.id"
+                        :value="acc.id"
+                        :color="acc.color"
+                      >
+                        <v-layout slot="label">
+                          <v-flex class="ma-auto mr-2">{{ acc.name }}</v-flex>
+                          <v-flex><v-img :src="acc.image" width="50px" height="50px" contain></v-img></v-flex>
+                        </v-layout>
+                      </v-radio>
+                    </v-radio-group>
                   </v-card>
 
                   <v-btn color="primary" @click="step++">Continue</v-btn>
@@ -101,17 +110,27 @@
                 </v-stepper-content>
 
                 <v-stepper-content step="5">
-                  <v-card class="pa-2 mb-2" color="grey lighten-2" flat>
-                    <v-select
-                      :items="categories"
-                      item-value="id"
-                      item-text="name"
+                  <v-card class="pa-2 mb-2" flat>
+                    <v-radio-group
                       v-model="movement.categoryId"
                       :rules="rules.category"
-                      label="Select category"
+                      label="Select category:"
                       prepend-icon="label"
                       required
-                    ></v-select>
+                      row
+                    >
+                      <v-radio
+                        v-for="cat in categories"
+                        :key="cat.id"
+                        :value="cat.id"
+                        :color="cat.color"
+                      >
+                        <div slot="label">
+                          <v-icon :style="{ 'color': cat.color }">{{cat.icon}}</v-icon>
+                          {{ cat.name }}
+                        </div>
+                      </v-radio>
+                    </v-radio-group>
 
                     <v-select
                       :items="tagItems"
