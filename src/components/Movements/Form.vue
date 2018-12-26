@@ -54,6 +54,7 @@
                     >
                       <v-radio color="red" label="Expense" value="expense"></v-radio>
                       <v-radio color="green" label="Income" value="income"></v-radio>
+                      <v-radio color="blue" label="Transfer" value="transfer"></v-radio>
                     </v-radio-group>
 
                     <v-text-field
@@ -90,12 +91,55 @@
                       label="Select account"
                       prepend-icon="account_balance"
                       required
+                      v-if="movement.type !== 'transfer'"
                     >
                       <v-radio
                         v-for="acc in accounts"
                         :key="acc.id"
                         :value="acc.id"
                         :color="acc.color"
+                      >
+                        <v-layout slot="label">
+                          <v-flex class="ma-auto mr-2">{{ acc.name }}</v-flex>
+                          <v-flex><v-img :src="acc.image" width="50px" height="50px" contain></v-img></v-flex>
+                        </v-layout>
+                      </v-radio>
+                    </v-radio-group>
+
+                    <v-radio-group
+                      v-model="transferSource"
+                      :rules="rules.account"
+                      label="Select account source:"
+                      prepend-icon="account_balance"
+                      required
+                      v-if="movement.type === 'transfer'"
+                    >
+                      <v-radio
+                        v-for="acc in accounts"
+                        :key="acc.id"
+                        :value="acc.id"
+                        color="red"
+                      >
+                        <v-layout slot="label">
+                          <v-flex class="ma-auto mr-2">{{ acc.name }}</v-flex>
+                          <v-flex><v-img :src="acc.image" width="50px" height="50px" contain></v-img></v-flex>
+                        </v-layout>
+                      </v-radio>
+                    </v-radio-group>
+
+                    <v-radio-group
+                      v-model="transferTarget"
+                      :rules="rules.account"
+                      label="Select account target:"
+                      prepend-icon="account_balance"
+                      required
+                      v-if="movement.type === 'transfer'"
+                    >
+                      <v-radio
+                        v-for="acc in accounts"
+                        :key="acc.id"
+                        :value="acc.id"
+                        color="green"
                       >
                         <v-layout slot="label">
                           <v-flex class="ma-auto mr-2">{{ acc.name }}</v-flex>
@@ -280,6 +324,8 @@ export default {
       step: this.initialStep,
       valid: false,
       menuDate: false,
+      transferSource: null,
+      transferTarget: null,
       rules: {
         description: [
           v => !!v || 'Description is required',
@@ -330,12 +376,37 @@ export default {
       if (this.$refs.form.validate()) {
         this.removeInvalidTags()
 
-        MovementManager
-          .save(MovementManager.getModelInstance(this.movement).toObject(), this.movement.id)
-          .then(() => {
-            this.addMessage({ text: `Movement "${this.movement.description}" saved`, type: 'success' })
-            this.nextMovementAction(action)
-          })
+        if (this.movement.type === 'transfer') {
+          // Save movement 1
+          let movSource = MovementManager.getModelInstance(this.movement).toObject()
+          movSource.type = 'expense'
+          movSource.accountId = this.transferSource
+          MovementManager
+            .save(movSource)
+            .then(() => {
+              this.addMessage({ text: `Movement "${movSource.description}" saved`, type: 'success' })
+              this.nextMovementAction(action)
+            })
+
+          // Save movement 2
+          let movTarget = MovementManager.getModelInstance(this.movement).toObject()
+          movTarget.type = 'income'
+          movTarget.accountId = this.transferTarget
+          MovementManager
+            .save(movTarget)
+            .then(() => {
+              this.addMessage({ text: `Movement "${movTarget.description}" saved`, type: 'success' })
+              this.nextMovementAction(action)
+            })
+        } else {
+          // save regular income or expense
+          MovementManager
+            .save(MovementManager.getModelInstance(this.movement).toObject(), this.movement.id)
+            .then(() => {
+              this.addMessage({ text: `Movement "${this.movement.description}" saved`, type: 'success' })
+              this.nextMovementAction(action)
+            })
+        }
       }
     },
     ...mapActions('messages', ['addMessage']),
