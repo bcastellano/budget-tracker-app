@@ -43,6 +43,9 @@
         <v-btn color="primary" absolute top right fab @click.stop="openForm()">
           <v-icon>add</v-icon>
         </v-btn>
+        <v-btn color="grey" small absolute bottom right fab @click.stop="importForm()">
+          <v-icon>input</v-icon>
+        </v-btn>
       </v-card>
 
       <MovementForm
@@ -56,12 +59,21 @@
         v-on:form-empty="emptyForm($event)"
         v-on:form-copy="copyForm($event)"
       ></MovementForm>
+
+      <MovementImportForm
+        :opened="formImportOpened"
+        :accounts="accounts"
+        :categories="categories"
+        :headers="headers"
+        v-on:import-closed="closeImportForm($event)"
+      ></MovementImportForm>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import MovementForm from './Form'
+import MovementImportForm from './ImportForm'
 import { MovementManager } from '@/models/Movement'
 import { mapActions } from 'vuex'
 import _ from 'lodash/collection'
@@ -69,11 +81,13 @@ import _ from 'lodash/collection'
 export default {
   name: 'MovementList',
   components: {
-    MovementForm
+    MovementForm,
+    MovementImportForm
   },
   data () {
     return {
       formOpened: false,
+      formImportOpened: false,
       edit: false,
       initialStep: 1,
       movementData: {},
@@ -120,9 +134,18 @@ export default {
       this.formOpened = true
       this.initialStep = 1
     },
+    importForm: function () {
+      const defaultMovement = { type: 'expense' }
+      this.movementData = defaultMovement
+      this.edit = true
+      this.formImportOpened = true
+    },
     closeForm: function (event) {
       this.movementData = {}
       this.formOpened = false
+    },
+    closeImportForm: function (event) {
+      this.formImportOpened = false
     },
     emptyForm: function (event) {
       this.movementData = {}
