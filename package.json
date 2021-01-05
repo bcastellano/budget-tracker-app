@@ -11,7 +11,7 @@
     "e2e:open": "vue-cli-service e2e:open"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "firebase-tools": "^6.2.2",
     "firebaseui": "^2.7.0",
     "lodash": "^4.17.10",
